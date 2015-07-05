@@ -1,0 +1,127 @@
+﻿using System;
+using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace AVP_CustomLauncher
+{
+    class GameHack
+    {
+        int LithTechBaseAdress = 0x00400000;
+        int cshellBaseAdress = 0x0000000;           //Is changed later, when the app starts running.
+        Process[] myProcess;
+
+        static int threadDelay = 500;
+        private volatile bool _shouldStop = false;
+        string processName = "lithtech";
+        int ResolutionX = 1280;
+        int ResolutionY = 720;
+        float desiredfov = 90.0f;
+        float ReadFovX = 0;
+        float ReadFovY = 0;
+        float fovX = 2;
+        float fovY = 1;
+        bool foundProcess = false;
+
+        int fovAddress = 0x001DDFEC;
+        int[] offsetFovX = new int[] { 0x4, 0xC4 };
+        int[] offsetFovY = new int[] { 0x4, 0xC8 };
+
+        public void DoWork()
+        {
+            fovX = HorizontalFOVToHorizontalRadians(desiredfov);
+            fovY = HorizontalFOVToVerticalRadians(desiredfov);
+
+            System.Threading.Thread.Sleep(5000);
+
+            while (!_shouldStop)
+            {
+                try
+                {
+                    myProcess = Process.GetProcessesByName(processName);
+
+                    if (myProcess.Length > 0)
+                    {
+                        if (foundProcess == false)
+                            System.Threading.Thread.Sleep(2000);
+
+                        String appToHookTo = processName;
+                        Process[] foundProcesses = Process.GetProcessesByName(appToHookTo);
+                        ProcessModuleCollection modules = foundProcesses[0].Modules;
+                        ProcessModule dllBaseAdressIWant = null;
+                        foreach (ProcessModule i in modules)
+                        {
+                            if (i.ModuleName == "cshell.dll")
+                            {
+                                dllBaseAdressIWant = i;
+                            }
+                        }
+                        cshellBaseAdress = dllBaseAdressIWant.BaseAddress.ToInt32();
+                        foundProcess = true;
+                    }
+
+                    if (foundProcess)
+                    {
+                        ReadFovX = Trainer.ReadPointerFloat(processName, cshellBaseAdress + fovAddress, offsetFovX);
+                        ReadFovY = Trainer.ReadPointerFloat(processName, cshellBaseAdress + fovAddress, offsetFovY);
+                        
+                        if (ReadFovX != fovX && ReadFovX != 0x0000000)
+                            Trainer.WritePointerFloat(processName, cshellBaseAdress + fovAddress, offsetFovX, fovX);
+                        if (ReadFovY != fovY && ReadFovY != 0x0000000)
+                            Trainer.WritePointerFloat(processName, cshellBaseAdress + fovAddress, offsetFovY, fovY);
+                    }
+                    System.Threading.Thread.Sleep(threadDelay);
+                }
+                catch(Exception ex)
+                {
+                    Trace.WriteLine(ex.ToString());
+                }
+
+            }
+        }
+
+        public void SendValues(float value, int ResX, int ResY)
+        {
+            desiredfov = value;
+            ResolutionX = ResX;
+            ResolutionY = ResY;
+        }
+        
+        public void RequestStop()
+        {
+            _shouldStop = true;
+        }
+
+        //////////////////////////
+        // Calculator functions //
+        //////////////////////////
+        public double ConvertToRadians(double angle)
+        {
+            return Math.PI * angle / 180.0;
+        }
+
+
+        public float HorizontalFOVToHorizontalRadians(float angle)
+        {
+            double dHorizontalRadians;
+
+            dHorizontalRadians = ConvertToRadians(Convert.ToDouble(angle));
+            return Convert.ToSingle(Math.Round(dHorizontalRadians, 3));
+        }
+
+        public float HorizontalFOVToVerticalRadians(float angle)
+        {
+            double dHorizontalRadians, dVertialRadians;
+
+            dHorizontalRadians = ConvertToRadians(Convert.ToDouble(angle));
+            dVertialRadians = 2 * Math.Atan(Math.Tan(dHorizontalRadians / 2) * (ResolutionY * 1.0 / ResolutionX * 1.0));
+            return Convert.ToSingle(Math.Round(dVertialRadians, 3));
+        }
+        /////////////////////////////////
+        // End of calculator functions //
+        /////////////////////////////////
+    }
+}
