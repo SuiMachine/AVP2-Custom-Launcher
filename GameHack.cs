@@ -32,8 +32,8 @@ namespace AVP_CustomLauncher
 
         public void DoWork()
         {
-            fovX = HorizontalFOVToHorizontalRadians(desiredfov);
             fovY = HorizontalFOVToVerticalRadians(desiredfov);
+            fovX = VerticalRadiansToHorizontalRadiansWithResolution(fovY);
 
             System.Threading.Thread.Sleep(5000);
 
@@ -104,11 +104,13 @@ namespace AVP_CustomLauncher
         }
 
 
-        public float HorizontalFOVToHorizontalRadians(float angle)
+        public float VerticalRadiansToHorizontalRadiansWithResolution(float angle)
         {
+            double dVerticalRadians = Convert.ToDouble(angle);
             double dHorizontalRadians;
 
-            dHorizontalRadians = ConvertToRadians(Convert.ToDouble(angle));
+            dHorizontalRadians = 2 * Math.Atan(Math.Tan(dVerticalRadians / 2) * (ResolutionY * 1.0 / ResolutionX * 1.0));
+
             return Convert.ToSingle(Math.Round(dHorizontalRadians, 3));
         }
 
@@ -117,7 +119,7 @@ namespace AVP_CustomLauncher
             double dHorizontalRadians, dVertialRadians;
 
             dHorizontalRadians = ConvertToRadians(Convert.ToDouble(angle));
-            dVertialRadians = 2 * Math.Atan(Math.Tan(dHorizontalRadians / 2) * (ResolutionY * 1.0 / ResolutionX * 1.0));
+            dVertialRadians = 2 * Math.Atan(Math.Tan(dHorizontalRadians / 2) * (3 * 1.0 / 4 * 1.0));
             return Convert.ToSingle(Math.Round(dVertialRadians, 3));
         }
         /////////////////////////////////

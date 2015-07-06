@@ -47,6 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigChoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigChoice.Designer.cs">
+      <DependentUpon>ConfigChoice.cs</DependentUpon>
+    </Compile>
     <Compile Include="GameHack.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsForms\GraphicsSettings.cs">
@@ -70,6 +76,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Trainer.cs" />
+    <EmbeddedResource Include="ConfigChoice.resx">
+      <DependentUpon>ConfigChoice.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SettingsForms\GameSettings.resx">
       <DependentUpon>GameSettings.cs</DependentUpon>
     </EmbeddedResource>

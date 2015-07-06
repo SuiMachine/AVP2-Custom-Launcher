@@ -106,7 +106,7 @@ namespace AVP_CustomLauncher
 
             while ((line = SR.ReadLine()) != null)                                              //Yes, I know this is slow... does its job for such files anyway
             {
-                if (line.StartsWith("\"SCREENWIDTH\""))
+                if (line.StartsWith("\"SCREENWIDTH\"") || line.StartsWith("\"ScreenWidth\""))
                 {
                     var res = 0;
                     line = Regex.Match(line, @"\d+").Value;
@@ -123,7 +123,7 @@ namespace AVP_CustomLauncher
                     line = "";
                     continue;
                 }
-                else if(line.StartsWith("\"SCREENHEIGHT\""))
+                else if (line.StartsWith("\"SCREENHEIGHT\"") || line.StartsWith("\"ScreenHeight\""))
                 {
                     var res = 0;
                     line = Regex.Match(line, @"\d+").Value;
