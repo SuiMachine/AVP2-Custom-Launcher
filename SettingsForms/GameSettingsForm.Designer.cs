@@ -1,6 +1,6 @@
 ﻿namespace AVP_CustomLauncher
 {
-    partial class GraphicsSettings
+    partial class GameSettings
     {
         /// <summary>
         /// Required designer variable.
@@ -41,14 +41,22 @@
             this.label1 = new System.Windows.Forms.Label();
             this.B_SaveAndClose = new System.Windows.Forms.Button();
             this.B_Cancel = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.C_DisableHardwareCursor = new System.Windows.Forms.CheckBox();
+            this.C_DisableSound = new System.Windows.Forms.CheckBox();
+            this.C_DisableMusic = new System.Windows.Forms.CheckBox();
+            this.C_DisableLogos = new System.Windows.Forms.CheckBox();
+            this.C_DisableTripleBuffering = new System.Windows.Forms.CheckBox();
+            this.C_DisableJoystick = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // B_ManualEdit
             // 
-            this.B_ManualEdit.Location = new System.Drawing.Point(12, 166);
+            this.B_ManualEdit.Location = new System.Drawing.Point(12, 167);
             this.B_ManualEdit.Name = "B_ManualEdit";
-            this.B_ManualEdit.Size = new System.Drawing.Size(859, 107);
+            this.B_ManualEdit.Size = new System.Drawing.Size(368, 335);
             this.B_ManualEdit.TabIndex = 0;
             this.B_ManualEdit.Text = "";
             this.B_ManualEdit.TextChanged += new System.EventHandler(this.B_ManualEdit_TextChanged);
@@ -157,7 +165,7 @@
             // 
             // B_SaveAndClose
             // 
-            this.B_SaveAndClose.Location = new System.Drawing.Point(312, 338);
+            this.B_SaveAndClose.Location = new System.Drawing.Point(100, 508);
             this.B_SaveAndClose.Name = "B_SaveAndClose";
             this.B_SaveAndClose.Size = new System.Drawing.Size(93, 23);
             this.B_SaveAndClose.TabIndex = 2;
@@ -167,7 +175,7 @@
             // 
             // B_Cancel
             // 
-            this.B_Cancel.Location = new System.Drawing.Point(411, 338);
+            this.B_Cancel.Location = new System.Drawing.Point(199, 508);
             this.B_Cancel.Name = "B_Cancel";
             this.B_Cancel.Size = new System.Drawing.Size(93, 23);
             this.B_Cancel.TabIndex = 3;
@@ -175,11 +183,92 @@
             this.B_Cancel.UseVisualStyleBackColor = true;
             this.B_Cancel.Click += new System.EventHandler(this.B_Cancel_Click);
             // 
-            // GraphicsSettings
+            // panel2
+            // 
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.C_DisableHardwareCursor);
+            this.panel2.Controls.Add(this.C_DisableSound);
+            this.panel2.Controls.Add(this.C_DisableMusic);
+            this.panel2.Controls.Add(this.C_DisableLogos);
+            this.panel2.Controls.Add(this.C_DisableTripleBuffering);
+            this.panel2.Controls.Add(this.C_DisableJoystick);
+            this.panel2.Location = new System.Drawing.Point(199, 12);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(181, 148);
+            this.panel2.TabIndex = 9;
+            // 
+            // C_DisableHardwareCursor
+            // 
+            this.C_DisableHardwareCursor.AutoSize = true;
+            this.C_DisableHardwareCursor.Location = new System.Drawing.Point(3, 120);
+            this.C_DisableHardwareCursor.Name = "C_DisableHardwareCursor";
+            this.C_DisableHardwareCursor.Size = new System.Drawing.Size(143, 17);
+            this.C_DisableHardwareCursor.TabIndex = 9;
+            this.C_DisableHardwareCursor.Text = "Disable Hardware Cursor";
+            this.C_DisableHardwareCursor.UseVisualStyleBackColor = true;
+            this.C_DisableHardwareCursor.CheckedChanged += new System.EventHandler(this.C_DisableHardwareCursor_CheckedChanged);
+            // 
+            // C_DisableSound
+            // 
+            this.C_DisableSound.AutoSize = true;
+            this.C_DisableSound.Location = new System.Drawing.Point(3, 5);
+            this.C_DisableSound.Name = "C_DisableSound";
+            this.C_DisableSound.Size = new System.Drawing.Size(95, 17);
+            this.C_DisableSound.TabIndex = 8;
+            this.C_DisableSound.Text = "Disable Sound";
+            this.C_DisableSound.UseVisualStyleBackColor = true;
+            this.C_DisableSound.CheckedChanged += new System.EventHandler(this.C_DisableSound_CheckedChanged);
+            // 
+            // C_DisableMusic
+            // 
+            this.C_DisableMusic.AutoSize = true;
+            this.C_DisableMusic.Location = new System.Drawing.Point(3, 28);
+            this.C_DisableMusic.Name = "C_DisableMusic";
+            this.C_DisableMusic.Size = new System.Drawing.Size(92, 17);
+            this.C_DisableMusic.TabIndex = 7;
+            this.C_DisableMusic.Text = "Disable Music";
+            this.C_DisableMusic.UseVisualStyleBackColor = true;
+            this.C_DisableMusic.CheckedChanged += new System.EventHandler(this.C_DisableMusic_CheckedChanged);
+            // 
+            // C_DisableLogos
+            // 
+            this.C_DisableLogos.AutoSize = true;
+            this.C_DisableLogos.Location = new System.Drawing.Point(3, 51);
+            this.C_DisableLogos.Name = "C_DisableLogos";
+            this.C_DisableLogos.Size = new System.Drawing.Size(93, 17);
+            this.C_DisableLogos.TabIndex = 6;
+            this.C_DisableLogos.Text = "Disable Logos";
+            this.C_DisableLogos.UseVisualStyleBackColor = true;
+            this.C_DisableLogos.CheckedChanged += new System.EventHandler(this.C_DisableLogos_CheckedChanged);
+            // 
+            // C_DisableTripleBuffering
+            // 
+            this.C_DisableTripleBuffering.AutoSize = true;
+            this.C_DisableTripleBuffering.Location = new System.Drawing.Point(3, 74);
+            this.C_DisableTripleBuffering.Name = "C_DisableTripleBuffering";
+            this.C_DisableTripleBuffering.Size = new System.Drawing.Size(135, 17);
+            this.C_DisableTripleBuffering.TabIndex = 5;
+            this.C_DisableTripleBuffering.Text = "Disable Triple Buffering";
+            this.C_DisableTripleBuffering.UseVisualStyleBackColor = true;
+            this.C_DisableTripleBuffering.CheckedChanged += new System.EventHandler(this.C_DisableTripleBuffering_CheckedChanged);
+            // 
+            // C_DisableJoystick
+            // 
+            this.C_DisableJoystick.AutoSize = true;
+            this.C_DisableJoystick.Location = new System.Drawing.Point(3, 97);
+            this.C_DisableJoystick.Name = "C_DisableJoystick";
+            this.C_DisableJoystick.Size = new System.Drawing.Size(102, 17);
+            this.C_DisableJoystick.TabIndex = 4;
+            this.C_DisableJoystick.Text = "Disable Joystick";
+            this.C_DisableJoystick.UseVisualStyleBackColor = true;
+            this.C_DisableJoystick.CheckedChanged += new System.EventHandler(this.C_DisableJoystick_CheckedChanged);
+            // 
+            // GameSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(887, 373);
+            this.ClientSize = new System.Drawing.Size(393, 543);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.B_Cancel);
             this.Controls.Add(this.B_SaveAndClose);
             this.Controls.Add(this.panel1);
@@ -187,11 +276,13 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "GraphicsSettings";
+            this.Name = "GameSettings";
             this.Text = "Graphics Settings";
             this.Load += new System.EventHandler(this.GraphicsSettings_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -211,5 +302,12 @@
         private System.Windows.Forms.CheckBox C_32color;
         private System.Windows.Forms.Button B_SaveAndClose;
         private System.Windows.Forms.Button B_Cancel;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.CheckBox C_DisableHardwareCursor;
+        private System.Windows.Forms.CheckBox C_DisableSound;
+        private System.Windows.Forms.CheckBox C_DisableMusic;
+        private System.Windows.Forms.CheckBox C_DisableLogos;
+        private System.Windows.Forms.CheckBox C_DisableTripleBuffering;
+        private System.Windows.Forms.CheckBox C_DisableJoystick;
     }
 }

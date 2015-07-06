@@ -55,17 +55,11 @@
     </Compile>
     <Compile Include="GameHack.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="SettingsForms\GraphicsSettings.cs">
+    <Compile Include="SettingsForms\GameSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsForms\GraphicsSettings.Designer.cs">
-      <DependentUpon>GraphicsSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SettingsForms\GameSettings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SettingsForms\GameSettings.Designer.cs">
-      <DependentUpon>GameSettings.cs</DependentUpon>
+    <Compile Include="SettingsForms\GameSettingsForm.Designer.cs">
+      <DependentUpon>GameSettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -78,9 +72,6 @@
     <Compile Include="Trainer.cs" />
     <EmbeddedResource Include="ConfigChoice.resx">
       <DependentUpon>ConfigChoice.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SettingsForms\GameSettings.resx">
-      <DependentUpon>GameSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -95,8 +86,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SettingsForms\GraphicsSettings.resx">
-      <DependentUpon>GraphicsSettings.cs</DependentUpon>
+    <EmbeddedResource Include="SettingsForms\GameSettingsForm.resx">
+      <DependentUpon>GameSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
@@ -107,9 +98,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\avp_logo.png" />

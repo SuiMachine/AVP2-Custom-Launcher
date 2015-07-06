@@ -35,6 +35,7 @@ namespace AVP_CustomLauncher
             fovY = HorizontalFOVToVerticalRadians(desiredfov);
             fovX = VerticalRadiansToHorizontalRadiansWithResolution(fovY);
 
+            Trace.WriteLine("Display FOV calculated to: " + fovX + " horizontal, " + fovY + " vertical");
             System.Threading.Thread.Sleep(5000);
 
             while (!_shouldStop)
@@ -109,7 +110,7 @@ namespace AVP_CustomLauncher
             double dVerticalRadians = Convert.ToDouble(angle);
             double dHorizontalRadians;
 
-            dHorizontalRadians = 2 * Math.Atan(Math.Tan(dVerticalRadians / 2) * (ResolutionY * 1.0 / ResolutionX * 1.0));
+            dHorizontalRadians = 2 * Math.Atan(Math.Tan(dVerticalRadians / 2) * (ResolutionX * 1.0 / ResolutionY * 1.0));
 
             return Convert.ToSingle(Math.Round(dHorizontalRadians, 3));
         }
@@ -119,7 +120,7 @@ namespace AVP_CustomLauncher
             double dHorizontalRadians, dVertialRadians;
 
             dHorizontalRadians = ConvertToRadians(Convert.ToDouble(angle));
-            dVertialRadians = 2 * Math.Atan(Math.Tan(dHorizontalRadians / 2) * (3 * 1.0 / 4 * 1.0));
+            dVertialRadians = 2 * Math.Atan(Math.Tan(dHorizontalRadians / 2) * (768 * 1.0 / 1024 * 1.0));
             return Convert.ToSingle(Math.Round(dVertialRadians, 3));
         }
         /////////////////////////////////

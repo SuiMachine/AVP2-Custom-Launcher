@@ -12,18 +12,25 @@ using System.Text.RegularExpressions;
 
 namespace AVP_CustomLauncher
 {
-    public partial class GraphicsSettings : Form
+    public partial class GameSettings : Form
     {
         const string autoexecfile = "autoexec.cfg";
         const string customConfig = "autoexecextended.cfg";
         public int ResolutionX = 1280;
         public int ResolutionY = 720;
         public bool windowed = false;
+        public bool disablemusic = false;
+        public bool disablesound = false;
+        public bool disablelogos = false;
+        public bool disabletripplebuffering = false;
+        public bool disablejoystick = true;
+        public bool disablehardwarecursor = false;
+
         public bool aspectratiohack = false;
         public float fov = 90.0f;
         string text = "";
 
-        public GraphicsSettings(mainform parent)
+        public GameSettings(mainform parent)
         {
             InitializeComponent();
 
@@ -68,6 +75,72 @@ namespace AVP_CustomLauncher
                     else
                     {
                         C_Windowed.Checked = false;
+                    }
+                }
+                else if (words[0] == "DisableSound")
+                {
+                    if(words[1] == "True")
+                    {
+                        C_DisableSound.Checked = true;
+                    }
+                    else
+                    {
+                        C_DisableSound.Checked = false;
+                    }
+                }
+                else if (words[0] == "DisableMusic")
+                {
+                    if (words[1] == "True")
+                    {
+                        C_DisableMusic.Checked = true;
+                    }
+                    else
+                    {
+                        C_DisableMusic.Checked = false;
+                    }
+                }
+                else if (words[0] == "DisableLogos")
+                {
+                    if (words[1] == "True")
+                    {
+                        C_DisableLogos.Checked = true;
+                    }
+                    else
+                    {
+                        C_DisableLogos.Checked = false;
+                    }
+                }
+                else if (words[0] == "DisableTrippleBuffering")
+                {
+                    if (words[1] == "True")
+                    {
+                        C_DisableTripleBuffering.Checked = true;
+                    }
+                    else
+                    {
+                        C_DisableTripleBuffering.Checked = false;
+                    }
+                }
+                else if (words[0] == "DisableJoystick")
+                {
+                    if (words[1] == "True")
+                    {
+                        C_DisableJoystick.Checked = true;
+                    }
+                    else
+                    {
+                        C_DisableJoystick.Checked = false;
+                    }
+                }
+                else if (words[0] == "DisableHardwareCursor")
+                {
+                    if (words[1] == "True")
+                    {
+                        C_DisableHardwareCursor.Checked = true;
+                    }
+                    else
+                    {
+                        C_DisableHardwareCursor.Checked = false;
                     }
                 }
                 else if (words[0] == "AspectRatioFix")
@@ -233,8 +306,15 @@ namespace AVP_CustomLauncher
             StreamWriter SW = new StreamWriter(@customConfig);
             string output = "";
             output = output + "Windowed:" + windowed.ToString() + "\n";
+            output = output + "DisableSound:" + disablesound.ToString() + "\n";            
+            output = output + "DisableMusic:" + disablemusic.ToString() + "\n";
+            output = output + "DisableLogos:" + disablelogos.ToString() + "\n";
+            output = output + "DisableTrippleBuffering:" + disabletripplebuffering.ToString() + "\n";
+            output = output + "DisableJoystick:" + disablejoystick.ToString() + "\n";
+            output = output + "DisableHardwareCursor:" + disablehardwarecursor.ToString() + "\n";
             output = output + "AspectRatioFix:" + aspectratiohack.ToString() + "\n";
             output = output + "FOV:" + fov.ToString() + "\n";
+
             SW.WriteLine(output);
             SW.Close();
         }
@@ -278,6 +358,54 @@ namespace AVP_CustomLauncher
         private void B_Cancel_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void C_DisableSound_CheckedChanged(object sender, EventArgs e)
+        {
+            if (C_DisableSound.Checked)
+                disablesound = true;
+            else
+                disablesound = false;
+        }
+
+        private void C_DisableMusic_CheckedChanged(object sender, EventArgs e)
+        {
+            if (C_DisableMusic.Checked)
+                disablemusic = true;
+            else
+                disablemusic = false;
+        }
+
+        private void C_DisableLogos_CheckedChanged(object sender, EventArgs e)
+        {
+            if (C_DisableLogos.Checked)
+                disablelogos = true;
+            else
+                disablelogos = false;
+        }
+
+        private void C_DisableTripleBuffering_CheckedChanged(object sender, EventArgs e)
+        {
+            if (C_DisableTripleBuffering.Checked)
+                disabletripplebuffering = true;
+            else
+                disabletripplebuffering = false;
+        }
+
+        private void C_DisableJoystick_CheckedChanged(object sender, EventArgs e)
+        {
+            if (C_DisableJoystick.Checked)
+                disablejoystick = true;
+            else
+                disablejoystick = false;
+        }
+
+        private void C_DisableHardwareCursor_CheckedChanged(object sender, EventArgs e)
+        {
+            if (C_DisableHardwareCursor.Checked)
+                disablehardwarecursor = true;
+            else
+                disablehardwarecursor = false;
         }
     }
 }

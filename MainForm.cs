@@ -15,8 +15,7 @@ namespace AVP_CustomLauncher
 {
     public partial class mainform : Form
     {
-        GameSettings _GameSettings;
-        GraphicsSettings _GraphicsSettings;
+        GameSettings _GraphicsSettings;
         ConfigChoice _ConfigChoice;
         GameHack _gamehack = new GameHack();
 
@@ -45,8 +44,7 @@ namespace AVP_CustomLauncher
                 CreateGenericAVP2Cmds();
             }
 
-            _GameSettings = new GameSettings(this);
-            _GraphicsSettings = new GraphicsSettings(this);
+            _GraphicsSettings = new GameSettings(this);
         }
 
         private void B_StartGame_Click(object sender, EventArgs e)
@@ -54,8 +52,44 @@ namespace AVP_CustomLauncher
             StreamReader SR = new StreamReader(@"avp2cmds.txt");
             string cmdlineparamters = "";
             cmdlineparamters = SR.ReadToEnd();
+
             if (_GraphicsSettings.windowed)
                 cmdlineparamters = cmdlineparamters + " +windowed 1";
+            else
+                cmdlineparamters = cmdlineparamters + " +windowed 1";  
+
+            if (_GraphicsSettings.disablesound)
+                cmdlineparamters = cmdlineparamters + " +DisableSound 1";
+            else
+                cmdlineparamters = cmdlineparamters + " +DisableSound 0";
+
+            if (_GraphicsSettings.disablemusic)
+                cmdlineparamters = cmdlineparamters + " +DisableMusic 1";
+            else
+                cmdlineparamters = cmdlineparamters + " +DisableMusic 0";
+
+            if (_GraphicsSettings.disablelogos)
+                cmdlineparamters = cmdlineparamters + " +DisableMovies 1";
+            else
+                cmdlineparamters = cmdlineparamters + " +DisableMovies 0";
+
+            if (_GraphicsSettings.disablejoystick)
+                cmdlineparamters = cmdlineparamters + " +DisableJoystick 1";
+            else
+                cmdlineparamters = cmdlineparamters + " +DisableJoystick 0";
+
+            if (_GraphicsSettings.disabletripplebuffering)
+                cmdlineparamters = cmdlineparamters + " +EnableTripBuf 0";
+            else
+                cmdlineparamters = cmdlineparamters + " +EnableTripBuf 1";
+
+            if (_GraphicsSettings.disablehardwarecursor)
+                cmdlineparamters = cmdlineparamters + " +DisableHardwareCursor 1";
+            else
+                cmdlineparamters = cmdlineparamters + " +DisableHardwareCursor 0";
+                
+
+
 
             Thread GameHackThread = new Thread(_gamehack.DoWork);
             if (_GraphicsSettings.aspectratiohack)
@@ -90,12 +124,6 @@ namespace AVP_CustomLauncher
             _GraphicsSettings.ShowDialog();
         }
 
-        private void B_GameSettings_Click(object sender, EventArgs e)
-        {
-            _GameSettings.SetDesktopLocation(this.DesktopLocation.X + 10, this.DesktopLocation.Y + 10);
-            _GameSettings.ShowDialog();
-        }
-
         private void B_Exit_Click(object sender, EventArgs e)
         {
             _gamehack.RequestStop();
@@ -104,7 +132,7 @@ namespace AVP_CustomLauncher
 
         private void CreateGenericAVP2Cmds()
         {
-            string output = "-windowtitle \"Aliens vs. Predator 2\" -rez AVP2.rez -rez sounds.rez -rez Alien.rez -rez Marine.rez -rez Predator.rez -rez Multi.rez -rez AVP2dll.rez -rez AVP2l.rez -rez custom -rez AVP2p.rez -rez AVP2p2.rez -rez AVP2P1.REZ +DisableMusic 0 +DisableSound 0 +DisableMovies 0 +DisableJoystick 1 +EnableTripBuf 0 +DisableHardwareCursor 0";
+            string output = "-windowtitle \"Aliens vs. Predator 2\" -rez AVP2.rez -rez sounds.rez -rez Alien.rez -rez Marine.rez -rez Predator.rez -rez Multi.rez -rez AVP2dll.rez -rez AVP2l.rez -rez custom -rez AVP2p.rez -rez AVP2p2.rez -rez AVP2P1.REZ";
             StreamWriter SW = new StreamWriter(@"avp2cmds.txt");
             SW.WriteLine(output);
             SW.Close();
