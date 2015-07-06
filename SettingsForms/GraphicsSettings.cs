@@ -163,10 +163,10 @@ namespace AVP_CustomLauncher
 
                     continue;
                 }
-                text = text + line + "\n";
-                B_ManualEdit.Text = text;
+                else
+                    text = text + line + "\n";
             }
-            SR.Dispose();
+            B_ManualEdit.Text = text;
             SR.Close();
         }
 
@@ -241,7 +241,6 @@ namespace AVP_CustomLauncher
 
         private void savefile()
         {
-
             StreamWriter SW = new StreamWriter(@autoexecfile);
             string output = "";
             output = output + "\"SCREENWIDTH\" \"" + ResolutionX.ToString() + "\"\n";
@@ -262,7 +261,6 @@ namespace AVP_CustomLauncher
             output = output + text;
             SW.WriteLine(output);
             SW.Close();
-            SW.Dispose();
         }
 
         private void B_ManualEdit_TextChanged(object sender, EventArgs e)
