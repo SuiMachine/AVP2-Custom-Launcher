@@ -26,11 +26,7 @@ namespace AVP_CustomLauncher
 
         private void mainform_Load(object sender, EventArgs e)
         {
-            /*if(!File.Exists(@"lithtech.exe"))
-            {
-                MessageBox.Show("No lithtech.exe found, please place the custom launcher in the directory with a game!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Close();
-            }*/
+            CheckForRequiredGameFiles();
 
             if(!File.Exists(@"autoexec.cfg"))
             {
@@ -45,6 +41,20 @@ namespace AVP_CustomLauncher
             }
 
             _GraphicsSettings = new GameSettings(this);
+        }
+
+        private void CheckForRequiredGameFiles()
+        {
+            string[] files = { "lithtech.exe", "ALIEN.REZ", "AVP2.REZ", "AVP2DLL.REZ", "AVP2L.REZ", "AVP2P1.REZ", "binkw32.dll", "d3d.ren", "MARINE.REZ", "MULTI.REZ", "PREDATOR.REZ", "SOUNDS.REZ"};
+
+            for(int i=0; i<files.Length; i++)
+            {
+                if (!File.Exists(@files[i]))
+                {
+                    MessageBox.Show("No " +files[i] + " found. Please place the custom launcher in the directory with a game!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Close();
+                }
+            }
         }
 
         private void B_StartGame_Click(object sender, EventArgs e)
