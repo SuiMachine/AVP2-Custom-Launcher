@@ -277,7 +277,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "GameSettings";
-            this.Text = "Graphics Settings";
+            this.Text = "Game Settings";
             this.Load += new System.EventHandler(this.GraphicsSettings_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
