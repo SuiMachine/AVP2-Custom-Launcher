@@ -48,15 +48,19 @@
             this.C_DisableLogos = new System.Windows.Forms.CheckBox();
             this.C_DisableTripleBuffering = new System.Windows.Forms.CheckBox();
             this.C_DisableJoystick = new System.Windows.Forms.CheckBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.T_CommandLine = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // B_ManualEdit
             // 
-            this.B_ManualEdit.Location = new System.Drawing.Point(12, 167);
+            this.B_ManualEdit.Location = new System.Drawing.Point(12, 226);
             this.B_ManualEdit.Name = "B_ManualEdit";
-            this.B_ManualEdit.Size = new System.Drawing.Size(368, 335);
+            this.B_ManualEdit.Size = new System.Drawing.Size(368, 276);
             this.B_ManualEdit.TabIndex = 0;
             this.B_ManualEdit.Text = "";
             this.B_ManualEdit.TextChanged += new System.EventHandler(this.B_ManualEdit_TextChanged);
@@ -263,11 +267,39 @@
             this.C_DisableJoystick.UseVisualStyleBackColor = true;
             this.C_DisableJoystick.CheckedChanged += new System.EventHandler(this.C_DisableJoystick_CheckedChanged);
             // 
+            // panel3
+            // 
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.label4);
+            this.panel3.Controls.Add(this.T_CommandLine);
+            this.panel3.Location = new System.Drawing.Point(12, 166);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(368, 54);
+            this.panel3.TabIndex = 10;
+            // 
+            // T_CommandLine
+            // 
+            this.T_CommandLine.Location = new System.Drawing.Point(4, 25);
+            this.T_CommandLine.Name = "T_CommandLine";
+            this.T_CommandLine.Size = new System.Drawing.Size(356, 20);
+            this.T_CommandLine.TabIndex = 0;
+            this.T_CommandLine.TextChanged += new System.EventHandler(this.T_CommandLine_TextChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(4, 5);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(131, 13);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Command-line parameters:";
+            // 
             // GameSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(393, 543);
+            this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.B_Cancel);
             this.Controls.Add(this.B_SaveAndClose);
@@ -283,6 +315,8 @@
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -309,5 +343,8 @@
         private System.Windows.Forms.CheckBox C_DisableLogos;
         private System.Windows.Forms.CheckBox C_DisableTripleBuffering;
         private System.Windows.Forms.CheckBox C_DisableJoystick;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label label4;
+        public System.Windows.Forms.TextBox T_CommandLine;
     }
 }

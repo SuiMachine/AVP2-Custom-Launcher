@@ -97,6 +97,8 @@ namespace AVP_CustomLauncher
                 cmdlineparamters = cmdlineparamters + " +DisableHardwareCursor 1";
             else
                 cmdlineparamters = cmdlineparamters + " +DisableHardwareCursor 0";
+
+            cmdlineparamters = cmdlineparamters + _GraphicsSettings.T_CommandLine.Text;
                 
 
 

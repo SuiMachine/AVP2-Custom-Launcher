@@ -158,6 +158,10 @@ namespace AVP_CustomLauncher
                 {
                     TB_FOV.Text = words[1];     //Nothing else needed, cause it's getting parsed, when the text changes.
                 }
+                else if (words[0] == "CVARS")
+                {
+                    T_CommandLine.Text = words[1];
+                }
             }
             SR.Close();
 
@@ -314,6 +318,7 @@ namespace AVP_CustomLauncher
             output = output + "DisableHardwareCursor:" + disablehardwarecursor.ToString() + "\n";
             output = output + "AspectRatioFix:" + aspectratiohack.ToString() + "\n";
             output = output + "FOV:" + fov.ToString() + "\n";
+            output = output + "CVARS:" + T_CommandLine.Text + "\n"; 
 
             SW.WriteLine(output);
             SW.Close();
@@ -406,6 +411,11 @@ namespace AVP_CustomLauncher
                 disablehardwarecursor = true;
             else
                 disablehardwarecursor = false;
+        }
+
+        private void T_CommandLine_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
