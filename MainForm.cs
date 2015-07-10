@@ -66,7 +66,7 @@ namespace AVP_CustomLauncher
             if (_GraphicsSettings.windowed)
                 cmdlineparamters = cmdlineparamters + " +windowed 1";
             else
-                cmdlineparamters = cmdlineparamters + " +windowed 1";  
+                cmdlineparamters = cmdlineparamters + " +windowed 0";  
 
             if (_GraphicsSettings.disablesound)
                 cmdlineparamters = cmdlineparamters + " +DisableSound 1";
@@ -98,7 +98,7 @@ namespace AVP_CustomLauncher
             else
                 cmdlineparamters = cmdlineparamters + " +DisableHardwareCursor 0";
 
-            cmdlineparamters = cmdlineparamters + _GraphicsSettings.T_CommandLine.Text;
+            cmdlineparamters = cmdlineparamters + " " + _GraphicsSettings.T_CommandLine.Text;
                 
 
 
