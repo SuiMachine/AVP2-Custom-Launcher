@@ -45,7 +45,7 @@ namespace AVP_CustomLauncher
 
         private void CheckForRequiredGameFiles()
         {
-            string[] files = { "lithtech.exe", "ALIEN.REZ", "AVP2.REZ", "AVP2DLL.REZ", "AVP2L.REZ", "AVP2P1.REZ", "binkw32.dll", "d3d.ren", "MARINE.REZ", "MULTI.REZ", "PREDATOR.REZ", "SOUNDS.REZ"};
+            string[] files = { "lithtech.exe", "ALIEN.REZ", "AVP2SP.REZ", "AVP2.REZ", "AVP2DLL.REZ", "AVP2L.REZ", "AVP2P.REZ", "AVP2P1.REZ", "binkw32.dll", "d3d.ren", "MARINE.REZ", "MULTI.REZ", "PREDATOR.REZ", "SOUNDS.REZ"};
 
             for(int i=0; i<files.Length; i++)
             {
@@ -144,7 +144,7 @@ namespace AVP_CustomLauncher
 
         private void CreateGenericAVP2Cmds()
         {
-            string output = "-windowtitle \"Aliens vs. Predator 2\" -rez AVP2.rez -rez sounds.rez -rez Alien.rez -rez Marine.rez -rez Predator.rez -rez Multi.rez -rez AVP2dll.rez -rez AVP2l.rez -rez custom -rez AVP2p.rez -rez AVP2p2.rez -rez AVP2P1.REZ";
+            string output = "-windowtitle \"Aliens vs. Predator 2\" -rez AVP2.rez -rez sounds.rez -rez Alien.rez -rez Marine.rez -rez Predator.rez -rez Multi.rez -rez AVP2dll.rez -rez AVP2l.rez -rez AVP2p.rez -rez AVP2p2.rez -rez AVP2P1.REZ -rez AVP2SP.REZ -rez custom";
             StreamWriter SW = new StreamWriter(@"avp2cmds.txt");
             SW.WriteLine(output);
             SW.Close();
