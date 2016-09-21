@@ -45,7 +45,7 @@ namespace AVP_CustomLauncher
 
         private void CheckForRequiredGameFiles()
         {
-            string[] files = { "lithtech.exe", "ALIEN.REZ", "AVP2SP.REZ", "AVP2.REZ", "AVP2DLL.REZ", "AVP2L.REZ", "AVP2P.REZ", "AVP2P1.REZ", "binkw32.dll", "d3d.ren", "MARINE.REZ", "MULTI.REZ", "PREDATOR.REZ", "SOUNDS.REZ"};
+            string[] files = { "lithtech.exe", "ALIEN.REZ", "AVP2SP.REZ", "AVP2.REZ", "AVP2DLL.REZ", "AVP2L.REZ", "AVP2P1.REZ", "binkw32.dll", "d3d.ren", "MARINE.REZ", "MULTI.REZ", "PREDATOR.REZ", "SOUNDS.REZ"};
 
             for(int i=0; i<files.Length; i++)
             {
