@@ -48,31 +48,34 @@ namespace AVP_CustomLauncher
                     {
                         if (foundProcess == false)
                             System.Threading.Thread.Sleep(2000);
-
-                        String appToHookTo = processName;
-                        Process[] foundProcesses = Process.GetProcessesByName(appToHookTo);
-                        ProcessModuleCollection modules = foundProcesses[0].Modules;
-                        ProcessModule dllBaseAdressIWant = null;
-                        foreach (ProcessModule i in modules)
+                        if (cshellBaseAdress == 0x0 || LithTechBaseAdress == 0x0)
                         {
-                            if (i.ModuleName == "cshell.dll")
+                            String appToHookTo = processName;
+                            Process[] foundProcesses = Process.GetProcessesByName(appToHookTo);
+                            ProcessModuleCollection modules = foundProcesses[0].Modules;
+                            ProcessModule dllBaseAdressIWant = null;
+                            foreach (ProcessModule i in modules)
                             {
-                                dllBaseAdressIWant = i;
+                                if (i.ModuleName == "cshell.dll")
+                                {
+                                    dllBaseAdressIWant = i;
+                                }
                             }
+                            cshellBaseAdress = dllBaseAdressIWant.BaseAddress.ToInt32();
                         }
-                        cshellBaseAdress = dllBaseAdressIWant.BaseAddress.ToInt32();
+
                         foundProcess = true;
                     }
 
                     if (foundProcess)
                     {
-                        ReadFovX = Trainer.ReadPointerFloat(processName, cshellBaseAdress + fovAddress, offsetFovX);
-                        ReadFovY = Trainer.ReadPointerFloat(processName, cshellBaseAdress + fovAddress, offsetFovY);
+                        ReadFovX = Trainer.ReadPointerFloat(myProcess, cshellBaseAdress + fovAddress, offsetFovX);
+                        ReadFovY = Trainer.ReadPointerFloat(myProcess, cshellBaseAdress + fovAddress, offsetFovY);
                         
                         if (ReadFovX != fovX && ReadFovX != 0x0000000)
-                            Trainer.WritePointerFloat(processName, cshellBaseAdress + fovAddress, offsetFovX, fovX);
+                            Trainer.WritePointerFloat(myProcess, cshellBaseAdress + fovAddress, offsetFovX, fovX);
                         if (ReadFovY != fovY && ReadFovY != 0x0000000)
-                            Trainer.WritePointerFloat(processName, cshellBaseAdress + fovAddress, offsetFovY, fovY);
+                            Trainer.WritePointerFloat(myProcess, cshellBaseAdress + fovAddress, offsetFovY, fovY);
                     }
                     System.Threading.Thread.Sleep(threadDelay);
                 }
@@ -103,7 +106,6 @@ namespace AVP_CustomLauncher
         {
             return Math.PI * angle / 180.0;
         }
-
 
         public float VerticalRadiansToHorizontalRadiansWithResolution(float angle)
         {

@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\Fox\Aliens vs. Predator 2\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -53,6 +53,7 @@
     <Compile Include="ConfigChoice.Designer.cs">
       <DependentUpon>ConfigChoice.cs</DependentUpon>
     </Compile>
+    <Compile Include="DLLInjector.cs" />
     <Compile Include="GameHack.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsForms\GameSettingsForm.cs">
