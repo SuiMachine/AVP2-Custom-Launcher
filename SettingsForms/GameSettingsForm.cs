@@ -268,7 +268,11 @@ namespace AVP_CustomLauncher
         private void C_Windowed_CheckedChanged(object sender, EventArgs e)
         {
             if (C_Windowed.Checked)
+            {
                 windowed = true;
+                //MessageBox.Show("Warning: The game uses V-sync to limit its framerate and has some unintended behaviours when the framerate is uncapped.\n\nSince V-sync doesn't work in windowed mode, make sure to use either GPU control panel setting or external application (like Dxtory) to limit your framerate.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
             else
                 windowed = false;
         }

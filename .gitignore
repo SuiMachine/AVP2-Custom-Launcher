@@ -1,6 +1,7 @@
 releases/
 obj/
 bin/
+widescreenfix/Debug/
 *.suo
 *.user
 *.vspx

@@ -12,6 +12,7 @@ namespace AVP_CustomLauncher
     {
         int LithTechBaseAdress = 0x00400000;
         int cshellBaseAdress = 0x0000000;           //Is changed later, when the app starts running.
+        int hookedDllAddress = 0x0;
         Process[] myProcess;
 
         static int threadDelay = 500;
@@ -25,6 +26,7 @@ namespace AVP_CustomLauncher
         float fovX = 2;
         float fovY = 1;
         bool foundProcess = false;
+        bool dllInjected = false;
 
         int fovAddress = 0x001DDFEC;
         int[] offsetFovX = new int[] { 0x4, 0xC4 };
@@ -76,6 +78,27 @@ namespace AVP_CustomLauncher
                             Trainer.WritePointerFloat(myProcess, cshellBaseAdress + fovAddress, offsetFovX, fovX);
                         if (ReadFovY != fovY && ReadFovY != 0x0000000)
                             Trainer.WritePointerFloat(myProcess, cshellBaseAdress + fovAddress, offsetFovY, fovY);
+
+                        if(!dllInjected && LithTechBaseAdress != 0x0 && cshellBaseAdress != 0x0)
+                        {
+                            DllInjectionResult result = DllInjector.GetInstance.Inject(myProcess, "widescreenfix.dll");
+                            Debug.WriteLine("DLL Injection: " + result);
+                            dllInjected = true;
+
+                            ProcessModuleCollection modules = myProcess[0].Modules;
+                            ProcessModule dllBaseAdressIWant = null;
+                            foreach (ProcessModule i in modules)
+                            {
+                                if (i.ModuleName == "widescreenfix.dll")
+                                {
+                                    dllBaseAdressIWant = i;
+                                }
+                            }
+                            hookedDllAddress = dllBaseAdressIWant.BaseAddress.ToInt32();
+                            Debug.WriteLine("DLL Injected at: 0x" + hookedDllAddress.ToString("X4"));
+                            Trainer.WriteInteger(myProcess, hookedDllAddress + 0x19000, ResolutionX);
+                            Trainer.WriteInteger(myProcess, hookedDllAddress + 0x19004, ResolutionY);
+                        }
                     }
                     System.Threading.Thread.Sleep(threadDelay);
                 }

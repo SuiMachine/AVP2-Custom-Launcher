@@ -1,4 +1,11 @@
 #include <Windows.h>
+#include "Functions.h"
+#include "Main.h"
+
+static DWORD cshellAddress = 0x0;
+//static float aspectRatio = 1.333;
+static DWORD resolutionX = 1024;
+static DWORD resolutionY = 768;
 
 bool Hook(void * toHook, void * ourFunction, int lenght)
 {
@@ -18,78 +25,94 @@ bool Hook(void * toHook, void * ourFunction, int lenght)
 	return true;
 }
 
-DWORD jmpBackAddress;
+DWORD jmpResAddress;
+DWORD jmpFovAddress;
 
-void __declspec(naked) ourFunct()
+void __declspec(naked) fovHack()
 {
-	/*
-	[ENABLE]
-//code from here to '[DISABLE]' will be used to enable the cheat
-alloc(newmem,2048)
-label(resx)
-registersymbol(resx)
-label(resy)
-registersymbol(resy)
-label(returnhere)
-label(code)
-label(exit)
+	//DisplayFOV
+	//Start at: d3d.ren+FA52
+	//Ends at: d3d.ren+FA71
+	//TODO: Write the corrected FOV function
 
-newmem: //this is allocated memory, you have read,write,execute access
-//place your code here
-resx:
-dd (int)1280
-resy:
-dd (int)720
-
-code:
-mov eax,[resx]
-mov ecx,[resy]
-
-exit:
-jmp returnhere
-
-"cshell.dll"+E389:
-jmp code
-returnhere:
-
-
- 
- 
-[DISABLE]
-//code from here till the end of the code will be used to disable the cheat
-unregistersymbol(resx)
-unregistersymbol(resy)
-dealloc(newmem)
-"cshell.dll"+E389:
-mov eax,[edx]
-mov ecx,[edx+04]
-//Alt: db 8B 02 8B 4A 04*/
-	__asm 
+	__asm
 	{
-		jmp [jmpBackAddress]
+		mov eax, resolutionX
+		mov ecx, resolutionY
+		jmp[jmpResAddress]
 	}
 }
 
-DWORD WINAPI MainThread(LPVOID param)
+void __declspec(naked) resHack()
 {
-	int hookLenght = 0;
-	DWORD hookAddress = 0x0;
-	jmpBackAddress = hookAddress + hookLenght;
+	__asm 
+	{
+		mov eax, resolutionX
+		mov ecx, resolutionY
+		jmp [jmpResAddress]
+	}
+}
 
-	Hook((void*)hookAddress, ourFunct, hookLenght);
+bool rendererHooked = false;
+DWORD rendererModuleAddress = 0x0;
+void periodicCheck()
+{
+	DWORD address = GetBaseAddressForModuleInfo("d3d.ren");
+	if (address != rendererModuleAddress)
+	{
+		//I have no idea why I wrote this like this...
+		rendererModuleAddress = address;
+
+		//This I know however - base address is 0, it means the d3d.ren got deallocated, needs to be rehooked.
+		if (address == 0x0)
+			rendererHooked = false;
+		else
+		{
+			//Module was found, if it needs to be rehooked - do that. Set flag to true either way
+			if (!rendererHooked)
+			{
+				int hookLenght = 0x5;
+				DWORD hookAddress = rendererModuleAddress + 0xFA52;
+				Hook((void*)hookAddress, fovHack, hookLenght);
+			}
+
+			rendererHooked = true;
+		}
+	}
+}
+
+
+
+DWORD WINAPI HookThread(LPVOID param)
+{
+	MODULEINFO cshell = GetModuleInfo("cshell.dll");
+	cshellAddress = (DWORD)cshell.lpBaseOfDll;
+
+	//Resolution Hooking
+	{
+		//Overriding:
+		//mov eax,[edx]       - 2 OP bytes
+		//mov ecx,[edx + 04]  - 3 OP bytes
+		int hookLenght = 0x5;
+		DWORD hookAddress = cshellAddress+0xE389; 		//Solve address = "cshell.dll"+E389
+		jmpResAddress = hookAddress + hookLenght;
+		Hook((void*)hookAddress, resHack, hookLenght);
+	}
 
 	while (true)
 	{
-		Sleep(50);
+		periodicCheck();
+		Sleep(400);
 	}
 }
 
 BOOL WINAPI DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved)
 {
+	//starts from here
 	switch (dwReason)
 	{
 		case DLL_PROCESS_ATTACH:
-			CreateThread(0, 0, MainThread, hModule, 0, 0);
+			CreateThread(0, 0, HookThread, hModule, 0, 0);
 			break;
 	}
 
