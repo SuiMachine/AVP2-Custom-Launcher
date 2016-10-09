@@ -7,7 +7,5 @@ widescreenfix/Debug/
 *.vspx
 *.psess
 *.rar
-widescreenfix/Debug/Main.obj
-widescreenfix/Debug/Main.obj
-widescreenfix/Debug/vc140.pdb
-widescreenfix/Debug/widescreenfix.tlog/CL.write.1.tlog
+widescreenfix/Debug/
+widescreenfix/Release/
