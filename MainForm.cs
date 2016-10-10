@@ -55,6 +55,11 @@ namespace AVP_CustomLauncher
                     Close();
                 }
             }
+
+            if (!File.Exists(@"widescreenfix.dll"))
+            {
+                MessageBox.Show("Widescreenfix.dll has not been found. This file is required for Widescreen support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void B_StartGame_Click(object sender, EventArgs e)

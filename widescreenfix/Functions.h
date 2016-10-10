@@ -12,23 +12,6 @@ void debugMsgBoxAddress(DWORD addr)
 	MessageBox(NULL, szBuffer, "Title", MB_OK);
 }
 
-void PlaceJMP(BYTE *Address, DWORD jumpTo, DWORD lenght)
-{
-	DWORD dwOldProtectionFlag, dwBkup, dwRealAddress;
-
-	VirtualProtect(Address, lenght, PAGE_EXECUTE_READWRITE, &dwOldProtectionFlag);
-	dwRealAddress = (DWORD)(jumpTo - (DWORD)Address) - 5;
-	*Address = 0xE9;
-	*((DWORD *)(Address + 0x1)) = dwRealAddress;
-
-	for (DWORD x = 0x5; x < lenght; x++)
-	{
-		*(Address + x) = 0x90;
-	}
-
-	VirtualProtect(Address, lenght, dwOldProtectionFlag, &dwBkup);
-}
-
 MODULEINFO GetModuleInfo(char * moduleName)
 {
 	MODULEINFO modInfo = { 0 };

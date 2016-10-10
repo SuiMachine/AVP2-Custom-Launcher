@@ -9,3 +9,6 @@ widescreenfix/Debug/
 *.rar
 widescreenfix/Debug/
 widescreenfix/Release/
+Release/*.pdb
+Release/*.vshost.exe
+Release/*.vshost.exe.manifest
