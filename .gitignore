@@ -12,3 +12,4 @@ widescreenfix/Release/
 Release/*.pdb
 Release/*.vshost.exe
 Release/*.vshost.exe.manifest
+Release/app.publish/*

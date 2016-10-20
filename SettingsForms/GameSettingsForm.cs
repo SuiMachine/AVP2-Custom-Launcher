@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -25,6 +18,10 @@ namespace AVP_CustomLauncher
         public bool disabletripplebuffering = false;
         public bool disablejoystick = true;
         public bool disablehardwarecursor = false;
+        public bool GameBitDepth = true;
+        public bool TripleBuffer = false;
+        public float ScaleMenus = 1.0f;
+        public bool FixTJunc = false;
 
         public bool aspectratiohack = false;
         public float fov = 90.0f;
@@ -34,33 +31,19 @@ namespace AVP_CustomLauncher
         {
             InitializeComponent();
 
-            if (!File.Exists(@customConfig))
-            {
-                File.Create(@customConfig);
-            }
-            else
+            if (File.Exists(customConfig))
                 readcustomconfig();
         }
-
-        
-        struct autoexecstruct
-        {
-            public bool GameBitDepth;
-            public bool TripleBuffer;
-            public float ScaleMenus;
-            public bool FixTJunc;
-        }
-        autoexecstruct autoexec;
-
 
         private void GraphicsSettings_Load(object sender, EventArgs e)
         {
             readfile();
         }
-        
+
+        #region ReadFunctions
         public void readcustomconfig()
         {
-            StreamReader SR = new StreamReader(@customConfig);
+            StreamReader SR = new StreamReader(customConfig);
             string line = "";
 
             while((line = SR.ReadLine()) != null)
@@ -170,16 +153,16 @@ namespace AVP_CustomLauncher
 
         public void readfile()
         {
-            StreamReader SR = new StreamReader(@autoexecfile);
+            StreamReader SR = new StreamReader(autoexecfile);
             text = "";
             string line = "";
 
             ResolutionX = 1280;
             ResolutionY = 720;
-            autoexec.GameBitDepth = true;
-            autoexec.ScaleMenus = 1.0f;
-            autoexec.TripleBuffer = false;
-            autoexec.FixTJunc = false;
+            GameBitDepth = true;
+            ScaleMenus = 1.0f;
+            TripleBuffer = false;
+            FixTJunc = false;
 
             while ((line = SR.ReadLine()) != null)                                              //Yes, I know this is slow... does its job for such files anyway
             {
@@ -221,12 +204,12 @@ namespace AVP_CustomLauncher
                 {
                     if (line.EndsWith("\"16\""))
                     {
-                        autoexec.GameBitDepth = false;
+                        GameBitDepth = false;
                         C_32color.Checked = false;
                     }
                     else
                     {
-                        autoexec.GameBitDepth = true;
+                        GameBitDepth = true;
                         C_32color.Checked = true;
                     }
 
@@ -235,8 +218,8 @@ namespace AVP_CustomLauncher
                 else if (line.StartsWith("\"FixTJunc\""))
                 {
                     if (line.EndsWith("\"1\""))
-                        autoexec.FixTJunc = true;
-                    else autoexec.FixTJunc = false;
+                        FixTJunc = true;
+                    else FixTJunc = false;
 
                     continue;
                 }
@@ -246,11 +229,54 @@ namespace AVP_CustomLauncher
             B_ManualEdit.Text = text;
             SR.Close();
         }
+        #endregion
 
+        #region SaveFunctions
+        private void savecustomconfig()
+        {
+            string output = "";
+            output += "Windowed:" + windowed.ToString() + "\n";
+            output += "DisableSound:" + disablesound.ToString() + "\n";            
+            output += "DisableMusic:" + disablemusic.ToString() + "\n";
+            output += "DisableLogos:" + disablelogos.ToString() + "\n";
+            output += "DisableTrippleBuffering:" + disabletripplebuffering.ToString() + "\n";
+            output += "DisableJoystick:" + disablejoystick.ToString() + "\n";
+            output += "DisableHardwareCursor:" + disablehardwarecursor.ToString() + "\n";
+            output += "AspectRatioFix:" + aspectratiohack.ToString() + "\n";
+            output += "FOV:" + fov.ToString() + "\n";
+            output += "CVARS:" + T_CommandLine.Text + "\n";
+
+            File.WriteAllText(customConfig, output);
+        }
+
+        private void savefile()
+        {
+            string output = "";
+            output += "\"SCREENWIDTH\" \"" + ResolutionX.ToString() + "\"\n";
+            output += "\"GameScreenWidth\" \"" + ResolutionX.ToString() + "\"\n";
+            output += "\"SCREENHEIGHT\" \"" + ResolutionY.ToString() + "\"\n";
+            output += "\"GameScreenWidth\" \"" + ResolutionY.ToString() + "\"\n";
+
+            if(GameBitDepth)
+                output += "\"GameBitDepth\" \"32\"\n";
+            else
+                output += "\"GameBitDepth\" \"16\"\n";
+
+            if(FixTJunc)
+                output += "\"FixTJunc\" \"1\"\n";
+            else
+                output += "\"FixTJunc\" \"0\"\n";
+
+            output += text;
+            File.WriteAllText(autoexecfile, output);
+        }
+        #endregion
+
+        #region EventHandlers
         private void T_ResolutionX_TextChanged(object sender, EventArgs e)
         {
             var res = 1280;
-            if(int.TryParse(T_ResolutionX.Text, out res))
+            if (int.TryParse(T_ResolutionX.Text, out res))
             {
                 ResolutionX = res;
             }
@@ -295,62 +321,21 @@ namespace AVP_CustomLauncher
         private void C_32color_CheckedChanged(object sender, EventArgs e)
         {
             if (C_32color.Checked)
-                autoexec.GameBitDepth = true;
+                GameBitDepth = true;
             else
-                autoexec.GameBitDepth = false;
+                GameBitDepth = false;
         }
 
         private void TB_FOV_TextChanged(object sender, EventArgs e)
         {
             var res = 90.0f;
-            if(float.TryParse(TB_FOV.Text, out res))
+            if (float.TryParse(TB_FOV.Text, out res))
             {
                 fov = res;
             }
         }
 
-        private void savecustomconfig()
-        {
-            StreamWriter SW = new StreamWriter(@customConfig);
-            string output = "";
-            output = output + "Windowed:" + windowed.ToString() + "\n";
-            output = output + "DisableSound:" + disablesound.ToString() + "\n";            
-            output = output + "DisableMusic:" + disablemusic.ToString() + "\n";
-            output = output + "DisableLogos:" + disablelogos.ToString() + "\n";
-            output = output + "DisableTrippleBuffering:" + disabletripplebuffering.ToString() + "\n";
-            output = output + "DisableJoystick:" + disablejoystick.ToString() + "\n";
-            output = output + "DisableHardwareCursor:" + disablehardwarecursor.ToString() + "\n";
-            output = output + "AspectRatioFix:" + aspectratiohack.ToString() + "\n";
-            output = output + "FOV:" + fov.ToString() + "\n";
-            output = output + "CVARS:" + T_CommandLine.Text + "\n"; 
 
-            SW.WriteLine(output);
-            SW.Close();
-        }
-
-        private void savefile()
-        {
-            StreamWriter SW = new StreamWriter(@autoexecfile);
-            string output = "";
-            output = output + "\"SCREENWIDTH\" \"" + ResolutionX.ToString() + "\"\n";
-            output = output + "\"GameScreenWidth\" \"" + ResolutionX.ToString() + "\"\n";
-            output = output + "\"SCREENHEIGHT\" \"" + ResolutionY.ToString() + "\"\n";
-            output = output + "\"GameScreenWidth\" \"" + ResolutionY.ToString() + "\"\n";
-
-            if(autoexec.GameBitDepth)
-                output = output + "\"GameBitDepth\" \"32\"\n";
-            else
-                output = output + "\"GameBitDepth\" \"16\"\n";
-
-            if(autoexec.FixTJunc)
-                output = output + "\"FixTJunc\" \"1\"\n";
-            else
-                output = output + "\"FixTJunc\" \"0\"\n";
-
-            output = output + text;
-            SW.WriteLine(output);
-            SW.Close();
-        }
 
         private void B_ManualEdit_TextChanged(object sender, EventArgs e)
         {
@@ -421,5 +406,6 @@ namespace AVP_CustomLauncher
         {
 
         }
+        #endregion
     }
 }

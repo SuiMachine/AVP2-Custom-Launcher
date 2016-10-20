@@ -37,6 +37,7 @@ namespace AVP_CustomLauncher
         int bgScalingAddress = 0x001E03A4;
         int[] bgScalingOffsets = new int[] { 0x2BC, 0x1c4 };
 
+        #region MainThread
         public void DoWork()
         {
             fovY = HorizontalFOVToVerticalRadians(desiredfov);
@@ -140,13 +141,6 @@ namespace AVP_CustomLauncher
             }
         }
 
-        private float correntMenuBGWithAspect(float bgVal)
-        {
-            double verticalVal = 2 * Math.Atan(Math.Tan(bgVal / 2) * (ResolutionY * 1.0 / ResolutionX * 1.0));
-            double dHorizontalRadians = 2 * Math.Atan(Math.Tan(verticalVal / 2) * (1024 * 1.0 / 768 * 1.0));
-            return Convert.ToSingle(dHorizontalRadians);
-        }
-
         public void SendValues(float value, int ResX, int ResY)
         {
             desiredfov = value;
@@ -154,15 +148,21 @@ namespace AVP_CustomLauncher
             ResolutionY = ResY;
             Debug.WriteLine("Thread received values: " + ResolutionX + "x" + ResolutionY + " @ " + desiredfov);
         }
-        
+
         public void RequestStop()
         {
             _shouldStop = true;
         }
+        #endregion
 
-        //////////////////////////
-        // Calculator functions //
-        //////////////////////////
+        #region FOVCalculation
+        private float correntMenuBGWithAspect(float bgVal)
+        {
+            double verticalVal = 2 * Math.Atan(Math.Tan(bgVal / 2) * (ResolutionY * 1.0 / ResolutionX * 1.0));
+            double dHorizontalRadians = 2 * Math.Atan(Math.Tan(verticalVal / 2) * (1024 * 1.0 / 768 * 1.0));
+            return Convert.ToSingle(dHorizontalRadians);
+        }
+
         public double ConvertToRadians(double angle)
         {
             return Math.PI * angle / 180.0;
@@ -198,8 +198,6 @@ namespace AVP_CustomLauncher
             dVertialRadians = 2 * Math.Atan(Math.Tan(dHorizontalRadians / 2) * (768 * 1.0 / 1024 * 1.0));
             return Convert.ToSingle(Math.Round(dVertialRadians, 3));
         }
-        /////////////////////////////////
-        // End of calculator functions //
-        /////////////////////////////////
+        #endregion
     }
 }

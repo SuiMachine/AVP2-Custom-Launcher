@@ -28,13 +28,13 @@ namespace AVP_CustomLauncher
         {
             CheckForRequiredGameFiles();
 
-            if(!File.Exists(@"autoexec.cfg"))
+            if(!File.Exists("autoexec.cfg"))
             {
                 _ConfigChoice = new ConfigChoice();
                 _ConfigChoice.ShowDialog();
             }
 
-            if (!File.Exists(@"avp2cmds.txt"))
+            if (!File.Exists("avp2cmds.txt"))
             {
                 MessageBox.Show("No avp2cmds.txt found. The launcher will try to create it based on files in your current directory.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 CreateGenericAVP2Cmds();
@@ -49,14 +49,14 @@ namespace AVP_CustomLauncher
 
             for(int i=0; i<files.Length; i++)
             {
-                if (!File.Exists(@files[i]))
+                if (!File.Exists(files[i]))
                 {
                     MessageBox.Show("No " +files[i] + " found. Please place the custom launcher in the directory with a game!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Close();
                 }
             }
 
-            if (!File.Exists(@"widescreenfix.dll"))
+            if (!File.Exists("widescreenfix.dll"))
             {
                 MessageBox.Show("Widescreenfix.dll has not been found. This file is required for Widescreen support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -64,7 +64,7 @@ namespace AVP_CustomLauncher
 
         private void B_StartGame_Click(object sender, EventArgs e)
         {
-            StreamReader SR = new StreamReader(@"avp2cmds.txt");
+            StreamReader SR = new StreamReader("avp2cmds.txt");
             string cmdlineparamters = "";
             cmdlineparamters = SR.ReadToEnd();
 
@@ -150,9 +150,7 @@ namespace AVP_CustomLauncher
         private void CreateGenericAVP2Cmds()
         {
             string output = "-windowtitle \"Aliens vs. Predator 2\" -rez AVP2.rez -rez sounds.rez -rez Alien.rez -rez Marine.rez -rez Predator.rez -rez Multi.rez -rez AVP2dll.rez -rez AVP2l.rez -rez AVP2p.rez -rez AVP2p2.rez -rez AVP2P1.REZ -rez AVP2SP.REZ -rez custom";
-            StreamWriter SW = new StreamWriter(@"avp2cmds.txt");
-            SW.WriteLine(output);
-            SW.Close();
+            File.WriteAllText("avp2cmds.txt", output);
         }
     }
 }
