@@ -1,6 +1,6 @@
 Aliens vs. Predator 2 - Custom Launcher
 ============
-A custom launcher for Aliens vs. Predator 2, written in C#.
+A custom launcher for Aliens vs. Predator 2, written in C# (with widescreen fix written in C++ and elements of ASM)
 
 Features
 --------
@@ -9,6 +9,13 @@ Features
   * Supports custom screen resolutions.
   * Built in aspect ratio hack for easy access to widescreen resolutions.
   * Built in FOV changer, tied directly to aspect ratio hack (calculated as the most common Horizontal+ FOV).
+  
+Requirements
+-------
+ * Windows Vista / 7 / 8 / 10
+ * [Microsoft .NET Framework 4.5](https://www.microsoft.com/en-US/download/details.aspx?id=30653)
+ * [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48145) 32-bit
+ * Administrator rights on the system (due to writting to memory of other program / injecting DLL libraries etc.)
   
 Installation
 -------
