@@ -25,4 +25,4 @@ Patch the game if you haven't already. Download the program from [releases page]
 
 Credits
 -------
-* [SuicideMachine](www.twitch.tv/suicidemachine/)
+* [SuicideMachine](http://www.twitch.tv/suicidemachine/)
