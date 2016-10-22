@@ -32,9 +32,17 @@ bool Hook(void * toHook, void * ourFunction, int lenght)
 
 DWORD jmpResAddress;
 DWORD jmpFovAddress;
+DWORD jmpViewmodelAddress;
 float horizontalRadiansF;
+float viewmodelFOVRadians;
 
 static float increaseHorFOV()
+{
+	float tempVradian = 2 * atanf(tanf(horizontalRadiansF / 2.0f) * 0.75f);
+	return (2.0f * atanf(tanf(tempVradian / 2.0f) * aspectRatio));
+}
+
+static float increaseViewmodelFOV()
 {
 	float tempVradian = 2 * atanf(tanf(horizontalRadiansF / 2.0f) * 0.75f);
 	return (2.0f * atanf(tanf(tempVradian / 2.0f) * aspectRatio));
@@ -81,6 +89,49 @@ void __declspec(naked) fovHack()
 		jmp[jmpFovAddress]
 	}
 }
+
+void __declspec(naked) viewModelFOV()
+{
+	/*
+	cshell.dll+605D9 - je cshell.dll+60606
+	cshell.dll+605DB - fld dword ptr [eax+000001B4] <- only this
+	cshell.dll+605E1 - mov eax,[esp+0C]
+	cshell.dll+605E5 - pop esi
+	*/
+
+	__asm
+	{
+		fld dword ptr[eax + 0x000001B4]
+		fstp [viewmodelFOVRadians]
+		push eax
+		push ebx
+		push ecx
+		push edx
+		push esi
+		push edi
+		push esp
+		push ebp
+	}
+
+	viewmodelFOVRadians = increaseViewmodelFOV();
+
+	__asm
+	{
+		pop ebp
+		pop esp
+		pop edi
+		pop esi
+		pop edx
+		pop ecx
+		pop ebx
+		pop eax
+		fld dword ptr[viewmodelFOVRadians]
+		jmp[jmpViewmodelAddress]
+	}
+
+
+}
+
 void __declspec(naked) resHack()
 {
 	__asm
@@ -115,8 +166,17 @@ DWORD WINAPI HookThread(LPVOID param)
 		int hookLenght = 12;
 		DWORD hookAddress = baseAddress + 0xB7F4; 		//Solve address = "lithtech.exe"+B7F4
 		jmpFovAddress = hookAddress + hookLenght;
-		//Hook((void*)hookAddress, fovHack, hookLenght);
 		Hook((void*)hookAddress, fovHack, hookLenght);
+	}
+
+	//Viewmodel FOV
+	{
+		//Overriding:
+		//fld dword ptr[eax + 000001B4] - 6 OP bytes
+		int hookLenght = 6;
+		DWORD hookAddress = cshellAddress + 0x605DB; 		//Solve address = "cshell.dll"+605D8
+		jmpViewmodelAddress = hookAddress + hookLenght;
+		Hook((void*)hookAddress, viewModelFOV, hookLenght);
 	}
 
 	while (true)

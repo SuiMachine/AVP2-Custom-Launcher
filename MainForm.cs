@@ -22,13 +22,73 @@ namespace AVP_CustomLauncher
         public mainform()
         {
             InitializeComponent();
+            if (File.Exists("autoexecextended.cfg"))
+            {
+                setPositionFromConfig();
+            }
         }
 
+        #region Functions
+        private void CheckForRequiredGameFiles()
+        {
+            string[] files = { "lithtech.exe", "ALIEN.REZ", "AVP2SP.REZ", "AVP2.REZ", "AVP2DLL.REZ", "AVP2L.REZ", "AVP2P1.REZ", "binkw32.dll", "d3d.ren", "MARINE.REZ", "MULTI.REZ", "PREDATOR.REZ", "SOUNDS.REZ" };
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                if (!File.Exists(files[i]))
+                {
+                    MessageBox.Show("No " + files[i] + " found. Please place the custom launcher in the directory with a game!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Close();
+                }
+            }
+
+            if (!File.Exists("widescreenfix.dll"))
+            {
+                MessageBox.Show("Widescreenfix.dll has not been found. This file is required for Widescreen support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void CreateGenericAVP2Cmds()
+        {
+            string output = "-windowtitle \"Aliens vs. Predator 2\" -rez AVP2.rez -rez sounds.rez -rez Alien.rez -rez Marine.rez -rez Predator.rez -rez Multi.rez -rez AVP2dll.rez -rez AVP2l.rez -rez AVP2p.rez -rez AVP2p2.rez -rez AVP2P1.REZ -rez AVP2SP.REZ -rez custom";
+            File.WriteAllText("avp2cmds.txt", output);
+        }
+
+        private void setPositionFromConfig()
+        {
+            uint positionX = 0;
+            uint positionY = 0;
+            string[] setings = File.ReadAllLines("autoexecextended.cfg");
+            foreach (string line in setings)
+            {
+                if (line.StartsWith("PositionX:"))
+                {
+                    positionX = parsePosition(line);
+                }
+                else if (line.StartsWith("PositionY:"))
+                {
+                    positionY = parsePosition(line);
+                }
+            }
+
+            if (checkIfPosIsCorrect(positionX, positionY))
+            {
+                this.StartPosition = FormStartPosition.Manual;
+                this.SetDesktopLocation((int)positionX, (int)positionY);
+            }
+            else
+            {
+                this.StartPosition = FormStartPosition.CenterScreen;
+            }
+        }
+        #endregion
+
+        #region EventHandlers
         private void mainform_Load(object sender, EventArgs e)
         {
             CheckForRequiredGameFiles();
 
-            if(!File.Exists("autoexec.cfg"))
+            if (!File.Exists("autoexec.cfg"))
             {
                 _ConfigChoice = new ConfigChoice();
                 _ConfigChoice.ShowDialog();
@@ -43,22 +103,35 @@ namespace AVP_CustomLauncher
             _GraphicsSettings = new GameSettings(this);
         }
 
-        private void CheckForRequiredGameFiles()
+        private void mainform_FormClosed(object sender, FormClosedEventArgs e)
         {
-            string[] files = { "lithtech.exe", "ALIEN.REZ", "AVP2SP.REZ", "AVP2.REZ", "AVP2DLL.REZ", "AVP2L.REZ", "AVP2P1.REZ", "binkw32.dll", "d3d.ren", "MARINE.REZ", "MULTI.REZ", "PREDATOR.REZ", "SOUNDS.REZ"};
-
-            for(int i=0; i<files.Length; i++)
+            if (File.Exists("autoexecextended.cfg")) //well should have thought about this earlier... whatever
             {
-                if (!File.Exists(files[i]))
+                bool flagX = false;
+                bool flagY = false;
+                string[] settings = File.ReadAllLines("autoexecextended.cfg");
+                for (int i = 0; i < settings.Length; i++)
                 {
-                    MessageBox.Show("No " +files[i] + " found. Please place the custom launcher in the directory with a game!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Close();
+                    if (settings[i].StartsWith("PositionX:"))
+                    {
+                        settings[i] = "PositionX:" + this.DesktopLocation.X.ToString();
+                        flagX = true;
+                    }
+                    else if (settings[i].StartsWith("PositionY:"))
+                    {
+                        settings[i] = "PositionY:" + this.DesktopLocation.Y.ToString();
+                        flagY = true;
+                    }
                 }
-            }
 
-            if (!File.Exists("widescreenfix.dll"))
-            {
-                MessageBox.Show("Widescreenfix.dll has not been found. This file is required for Widescreen support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                string output = string.Join("\n", settings);
+
+                if (!flagX)
+                    output += "\nPositionX:" + this.DesktopLocation.X.ToString();
+                if (!flagY)
+                    output += "\nPositionY:" + this.DesktopLocation.Y.ToString();
+
+                File.WriteAllText("autoexecextended.cfg", output);
             }
         }
 
@@ -71,7 +144,7 @@ namespace AVP_CustomLauncher
             if (_GraphicsSettings.windowed)
                 cmdlineparamters = cmdlineparamters + " +windowed 1";
             else
-                cmdlineparamters = cmdlineparamters + " +windowed 0";  
+                cmdlineparamters = cmdlineparamters + " +windowed 0";
 
             if (_GraphicsSettings.disablesound)
                 cmdlineparamters = cmdlineparamters + " +DisableSound 1";
@@ -104,7 +177,7 @@ namespace AVP_CustomLauncher
                 cmdlineparamters = cmdlineparamters + " +DisableHardwareCursor 0";
 
             cmdlineparamters = cmdlineparamters + " " + _GraphicsSettings.T_CommandLine.Text;
-                
+
 
 
 
@@ -116,19 +189,19 @@ namespace AVP_CustomLauncher
             }
 
             try
-            {                
+            {
                 Process gameProcess = new Process();
                 gameProcess.StartInfo.FileName = "Lithtech.exe";
                 gameProcess.StartInfo.Arguments = cmdlineparamters;
                 gameProcess.EnableRaisingEvents = true;
                 this.WindowState = FormWindowState.Minimized;
-                
+
                 gameProcess.Start();
                 gameProcess.WaitForExit();
                 _gamehack.RequestStop();
                 this.Close();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("An error occurred!: " + ex.Message);
                 return;
@@ -146,11 +219,38 @@ namespace AVP_CustomLauncher
             _gamehack.RequestStop();
             this.Close();
         }
+        #endregion
 
-        private void CreateGenericAVP2Cmds()
+        #region ParseFunctions
+        private uint parsePosition(string line)
         {
-            string output = "-windowtitle \"Aliens vs. Predator 2\" -rez AVP2.rez -rez sounds.rez -rez Alien.rez -rez Marine.rez -rez Predator.rez -rez Multi.rez -rez AVP2dll.rez -rez AVP2l.rez -rez AVP2p.rez -rez AVP2p2.rez -rez AVP2P1.REZ -rez AVP2SP.REZ -rez custom";
-            File.WriteAllText("avp2cmds.txt", output);
+            uint outVal = 0;
+            string valText = line.Split(':')[1];
+            if (valText != String.Empty)
+            {
+                if (uint.TryParse(valText, out outVal))
+                {
+                    return outVal;
+                }
+                else
+                    return 0;
+            }
+            else
+                return 0;
         }
+
+        private bool checkIfPosIsCorrect(uint PosX, uint PosY)
+        {
+            Screen[] screens = Screen.AllScreens;
+            foreach (Screen screen in screens)
+            {
+                Rectangle scrRect = screen.WorkingArea;
+                if (PosX > scrRect.X && PosX < scrRect.X + scrRect.Width &&
+                    PosY > scrRect.Y && PosY < scrRect.Y + scrRect.Height)
+                    return true;
+            }
+            return false;
+        }
+        #endregion
     }
 }
