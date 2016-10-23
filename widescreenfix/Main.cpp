@@ -35,6 +35,7 @@ DWORD jmpFovAddress;
 DWORD jmpViewmodelAddress;
 float horizontalRadiansF;
 float viewmodelFOVRadians;
+bool d3drenHooked = false;
 
 static float increaseHorFOV()
 {
@@ -42,10 +43,10 @@ static float increaseHorFOV()
 	return (2.0f * atanf(tanf(tempVradian / 2.0f) * aspectRatio));
 }
 
-static float increaseViewmodelFOV()
+static float modifyViewmodels(float val)
 {
-	float tempVradian = 2 * atanf(tanf(horizontalRadiansF / 2.0f) * 0.75f);
-	return (2.0f * atanf(tanf(tempVradian / 2.0f) * aspectRatio));
+	float tempVradian = 2 * atanf(tanf(val / 2.0f) * ((float)resolutionY / resolutionX));
+	return (2.0f * atanf(tanf(tempVradian / 2.0f) * 1.333333f));
 }
 
 void __declspec(naked) fovHack()
@@ -93,15 +94,13 @@ void __declspec(naked) fovHack()
 void __declspec(naked) viewModelFOV()
 {
 	/*
-	cshell.dll+605D9 - je cshell.dll+60606
-	cshell.dll+605DB - fld dword ptr [eax+000001B4] <- only this
-	cshell.dll+605E1 - mov eax,[esp+0C]
-	cshell.dll+605E5 - pop esi
+	d3d.ren+FA4C - D8 2D B8628004        - fsubr dword ptr [d3d.ren+462B8] { [3.14] }
+	d3d.ren+FA52 - D9 5B 4C              - fstp dword ptr [ebx+4C]  <- this
+	d3d.ren+FA55 - D9 83 98000000        - fld dword ptr [ebx+00000098]
 	*/
 
 	__asm
 	{
-		fld dword ptr[eax + 0x000001B4]
 		fstp [viewmodelFOVRadians]
 		push eax
 		push ebx
@@ -113,7 +112,8 @@ void __declspec(naked) viewModelFOV()
 		push ebp
 	}
 
-	viewmodelFOVRadians = increaseViewmodelFOV();
+	viewmodelFOVRadians = modifyViewmodels(viewmodelFOVRadians);
+	viewmodelFOVRadians = modifyViewmodels(viewmodelFOVRadians);
 
 	__asm
 	{
@@ -126,10 +126,10 @@ void __declspec(naked) viewModelFOV()
 		pop ebx
 		pop eax
 		fld dword ptr[viewmodelFOVRadians]
+		fstp dword ptr[ebx + 0x4C]
+		fld dword ptr[ebx + 0x00000098]
 		jmp[jmpViewmodelAddress]
 	}
-
-
 }
 
 void __declspec(naked) resHack()
@@ -169,19 +169,30 @@ DWORD WINAPI HookThread(LPVOID param)
 		Hook((void*)hookAddress, fovHack, hookLenght);
 	}
 
-	//Viewmodel FOV
-	{
-		//Overriding:
-		//fld dword ptr[eax + 000001B4] - 6 OP bytes
-		int hookLenght = 6;
-		DWORD hookAddress = cshellAddress + 0x605DB; 		//Solve address = "cshell.dll"+605D8
-		jmpViewmodelAddress = hookAddress + hookLenght;
-		Hook((void*)hookAddress, viewModelFOV, hookLenght);
-	}
-
 	while (true)
 	{
 		aspectRatio = (float)(1.0 * resolutionX / resolutionY);
+		MODULEINFO d3dren = GetModuleInfo("d3d.ren");
+		if (d3dren.lpBaseOfDll == 0x0)
+		{
+			d3drenHooked = false;
+		}
+		else if (!d3drenHooked)
+		{
+			#ifdef _DEBUG
+			OutputDebugString("d3dRenHooked");
+			#endif // DEBUG
+
+			//ViewModel hack
+			//Overriding:
+			//fstp dword ptr [ebx+4C]
+			//fld dword ptr[ebx + 00000098]
+			int hookLenght = 9;
+			DWORD hookAddress = (DWORD)d3dren.lpBaseOfDll + 0xFA52; //SolveAddress = d3d.ren +FA52
+			jmpViewmodelAddress = hookAddress + hookLenght;
+			Hook((void*)hookAddress, viewModelFOV, hookLenght);
+			d3drenHooked = true;
+		}
 		Sleep(400);
 	}
 }

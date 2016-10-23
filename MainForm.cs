@@ -18,6 +18,8 @@ namespace AVP_CustomLauncher
         GameSettings _GraphicsSettings;
         ConfigChoice _ConfigChoice;
         GameHack _gamehack = new GameHack();
+        int _posX = 0;
+        int _posY = 0;
 
         public mainform()
         {
@@ -101,38 +103,6 @@ namespace AVP_CustomLauncher
             }
 
             _GraphicsSettings = new GameSettings(this);
-        }
-
-        private void mainform_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (File.Exists("autoexecextended.cfg")) //well should have thought about this earlier... whatever
-            {
-                bool flagX = false;
-                bool flagY = false;
-                string[] settings = File.ReadAllLines("autoexecextended.cfg");
-                for (int i = 0; i < settings.Length; i++)
-                {
-                    if (settings[i].StartsWith("PositionX:"))
-                    {
-                        settings[i] = "PositionX:" + this.DesktopLocation.X.ToString();
-                        flagX = true;
-                    }
-                    else if (settings[i].StartsWith("PositionY:"))
-                    {
-                        settings[i] = "PositionY:" + this.DesktopLocation.Y.ToString();
-                        flagY = true;
-                    }
-                }
-
-                string output = string.Join("\n", settings);
-
-                if (!flagX)
-                    output += "\nPositionX:" + this.DesktopLocation.X.ToString();
-                if (!flagY)
-                    output += "\nPositionY:" + this.DesktopLocation.Y.ToString();
-
-                File.WriteAllText("autoexecextended.cfg", output);
-            }
         }
 
         private void B_StartGame_Click(object sender, EventArgs e)
@@ -252,5 +222,46 @@ namespace AVP_CustomLauncher
             return false;
         }
         #endregion
+
+        private void mainform_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (File.Exists("autoexecextended.cfg")) //well should have thought about this earlier... whatever
+            {
+                bool flagX = false;
+                bool flagY = false;
+                string[] settings = File.ReadAllLines("autoexecextended.cfg");
+                for (int i = 0; i < settings.Length; i++)
+                {
+                    if (settings[i].StartsWith("PositionX:"))
+                    {
+                        settings[i] = "PositionX:" + _posX.ToString();
+                        flagX = true;
+                    }
+                    else if (settings[i].StartsWith("PositionY:"))
+                    {
+                        settings[i] = "PositionY:" + _posY.ToString();
+                        flagY = true;
+                    }
+                }
+
+                string output = string.Join("\n", settings);
+
+                if (!flagX)
+                    output += "\nPositionX:" + this._posX.ToString();
+                if (!flagY)
+                    output += "\nPositionY:" + this._posY.ToString();
+
+                File.WriteAllText("autoexecextended.cfg", output);
+            }
+        }
+
+        private void mainform_LocationChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                _posX = this.DesktopLocation.X;
+                _posY = this.DesktopLocation.Y;
+            }
+        }
     }
 }

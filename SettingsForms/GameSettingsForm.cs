@@ -33,11 +33,12 @@ namespace AVP_CustomLauncher
 
             if (File.Exists(customConfig))
                 readcustomconfig();
+
+            readfile();
         }
 
         private void GraphicsSettings_Load(object sender, EventArgs e)
         {
-            readfile();
         }
 
         #region ReadFunctions
