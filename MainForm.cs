@@ -23,6 +23,7 @@ namespace AVP_CustomLauncher
 
         public mainform()
         {
+            LogHandler.WriteLine("LogFile created.");
             InitializeComponent();
             if (File.Exists("autoexecextended.cfg"))
             {
@@ -110,6 +111,7 @@ namespace AVP_CustomLauncher
             StreamReader SR = new StreamReader("avp2cmds.txt");
             string cmdlineparamters = "";
             cmdlineparamters = SR.ReadToEnd();
+            cmdlineparamters = stripResolutionParameters(cmdlineparamters);
 
             if (_GraphicsSettings.windowed)
                 cmdlineparamters = cmdlineparamters + " +windowed 1";
@@ -148,8 +150,7 @@ namespace AVP_CustomLauncher
 
             cmdlineparamters = cmdlineparamters + " " + _GraphicsSettings.T_CommandLine.Text;
 
-
-
+            LogHandler.WriteLine("Launch parameters are: " + cmdlineparamters);
 
             Thread GameHackThread = new Thread(_gamehack.DoWork);
             if (_GraphicsSettings.aspectratiohack)
@@ -173,9 +174,48 @@ namespace AVP_CustomLauncher
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred!: " + ex.Message);
+                LogHandler.WriteLine("An error occurred when creating new process: " + ex.Message);
                 return;
             }
+        }
+
+        private string stripResolutionParameters(string cmdlineparamters)
+        {
+            string[] words = cmdlineparamters.Split(' ');
+            for (int i = 0; i < words.Length - 1; i++)
+            {
+                if (words[i].ToLower() == "++gamescreenwidth" || words[i].ToLower() == "++screenwidth")
+                {
+                    uint num;
+                    if (uint.TryParse(words[i + 1], out num))
+                    {
+                        words[i + 1] = _GraphicsSettings.ResolutionX.ToString();
+                        i++;
+                    }
+                }
+                else if (words[i].ToLower() == "++gamescreenheight" || words[i].ToLower() == "++screenheight")
+                {
+                    uint num;
+                    if (uint.TryParse(words[i + 1], out num))
+                    {
+                        words[i + 1] = _GraphicsSettings.ResolutionY.ToString();
+                        i++;
+                    }
+                }
+                else if (words[i].ToLower() == "++gamebitdepth" || words[i].ToLower() == "++bitdepth")
+                {
+                    uint num;
+                    if (uint.TryParse(words[i + 1], out num))
+                    {
+                        if (_GraphicsSettings.GameBitDepth)
+                            words[i + 1] = "32";
+                        else
+                            words[i + 1] = "16";
+                        i++;
+                    }
+                }
+            }
+            return string.Join(" ", words);
         }
 
         private void B_DisplaySettings_Click(object sender, EventArgs e)
@@ -188,6 +228,39 @@ namespace AVP_CustomLauncher
         {
             _gamehack.RequestStop();
             this.Close();
+        }
+
+        private void mainform_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (File.Exists("autoexecextended.cfg")) //well should have thought about this earlier... whatever
+            {
+                bool flagX = false;
+                bool flagY = false;
+                string[] settings = File.ReadAllLines("autoexecextended.cfg");
+                for (int i = 0; i < settings.Length; i++)
+                {
+                    if (settings[i].StartsWith("PositionX:"))
+                    {
+                        settings[i] = "PositionX:" + _posX.ToString();
+                        flagX = true;
+                    }
+                    else if (settings[i].StartsWith("PositionY:"))
+                    {
+                        settings[i] = "PositionY:" + _posY.ToString();
+                        flagY = true;
+                    }
+                }
+
+                string output = string.Join("\n", settings);
+
+                if (!flagX)
+                    output += "\nPositionX:" + this._posX.ToString();
+                if (!flagY)
+                    output += "\nPositionY:" + this._posY.ToString();
+
+                File.WriteAllText("autoexecextended.cfg", output);
+            }
+            LogHandler.Close();
         }
         #endregion
 
@@ -223,41 +296,11 @@ namespace AVP_CustomLauncher
         }
         #endregion
 
-        private void mainform_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (File.Exists("autoexecextended.cfg")) //well should have thought about this earlier... whatever
-            {
-                bool flagX = false;
-                bool flagY = false;
-                string[] settings = File.ReadAllLines("autoexecextended.cfg");
-                for (int i = 0; i < settings.Length; i++)
-                {
-                    if (settings[i].StartsWith("PositionX:"))
-                    {
-                        settings[i] = "PositionX:" + _posX.ToString();
-                        flagX = true;
-                    }
-                    else if (settings[i].StartsWith("PositionY:"))
-                    {
-                        settings[i] = "PositionY:" + _posY.ToString();
-                        flagY = true;
-                    }
-                }
 
-                string output = string.Join("\n", settings);
-
-                if (!flagX)
-                    output += "\nPositionX:" + this._posX.ToString();
-                if (!flagY)
-                    output += "\nPositionY:" + this._posY.ToString();
-
-                File.WriteAllText("autoexecextended.cfg", output);
-            }
-        }
 
         private void mainform_LocationChanged(object sender, EventArgs e)
         {
-            if (this.WindowState == FormWindowState.Normal)
+            if (this.WindowState == FormWindowState.Normal && this.DesktopLocation.X > -1 && this.DesktopLocation.Y>-1)
             {
                 _posX = this.DesktopLocation.X;
                 _posY = this.DesktopLocation.Y;

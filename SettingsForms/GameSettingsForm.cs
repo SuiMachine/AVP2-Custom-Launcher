@@ -9,8 +9,8 @@ namespace AVP_CustomLauncher
     {
         const string autoexecfile = "autoexec.cfg";
         const string customConfig = "autoexecextended.cfg";
-        public int ResolutionX = 1280;
-        public int ResolutionY = 720;
+        public int ResolutionX { get; set; }
+        public int ResolutionY { get; set; }
         public bool windowed = false;
         public bool disablemusic = false;
         public bool disablesound = false;
@@ -29,6 +29,8 @@ namespace AVP_CustomLauncher
 
         public GameSettings(mainform parent)
         {
+            ResolutionX = 1280;
+            ResolutionY = 720;
             InitializeComponent();
 
             if (File.Exists(customConfig))
@@ -167,7 +169,7 @@ namespace AVP_CustomLauncher
 
             while ((line = SR.ReadLine()) != null)                                              //Yes, I know this is slow... does its job for such files anyway
             {
-                if (line.StartsWith("\"SCREENWIDTH\"") || line.StartsWith("\"ScreenWidth\""))
+                if (line.StartsWith("\"SCREENWIDTH\"", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var res = 0;
                     line = Regex.Match(line, @"\d+").Value;
@@ -179,12 +181,12 @@ namespace AVP_CustomLauncher
 
                     continue;
                 }
-                else if (line.StartsWith("\"GameScreenWidth\""))
+                else if (line.StartsWith("\"GameScreenWidth\"", StringComparison.InvariantCultureIgnoreCase))
                 {
                     line = "";
                     continue;
                 }
-                else if (line.StartsWith("\"SCREENHEIGHT\"") || line.StartsWith("\"ScreenHeight\""))
+                else if (line.StartsWith("\"SCREENHEIGHT\"", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var res = 0;
                     line = Regex.Match(line, @"\d+").Value;
@@ -196,12 +198,12 @@ namespace AVP_CustomLauncher
 
                     continue;
                 }
-                else if (line.StartsWith("\"GameScreenHeight\""))
+                else if (line.StartsWith("\"GameScreenHeight\"", StringComparison.InvariantCultureIgnoreCase))
                 {
                     line = "";
                     continue;
                 }
-                else if (line.StartsWith("\"GameBitDepth\""))
+                else if (line.StartsWith("\"GameBitDepth\"", StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (line.EndsWith("\"16\""))
                     {
@@ -216,7 +218,7 @@ namespace AVP_CustomLauncher
 
                     continue;
                 }
-                else if (line.StartsWith("\"FixTJunc\""))
+                else if (line.StartsWith("\"FixTJunc\"", StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (line.EndsWith("\"1\""))
                         FixTJunc = true;
@@ -256,7 +258,7 @@ namespace AVP_CustomLauncher
             output += "\"SCREENWIDTH\" \"" + ResolutionX.ToString() + "\"\n";
             output += "\"GameScreenWidth\" \"" + ResolutionX.ToString() + "\"\n";
             output += "\"SCREENHEIGHT\" \"" + ResolutionY.ToString() + "\"\n";
-            output += "\"GameScreenWidth\" \"" + ResolutionY.ToString() + "\"\n";
+            output += "\"GameScreenHeight\" \"" + ResolutionY.ToString() + "\"\n";
 
             if(GameBitDepth)
                 output += "\"GameBitDepth\" \"32\"\n";
