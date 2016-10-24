@@ -107,30 +107,30 @@ namespace AVP_CustomLauncher
                                 string strByte = "";
                                 for (int i = 0; i < 5; i++)
                                 {
-                                    strByte += (Trainer.ReadByte(myProcess, cshellBaseAdress + 0xEF79 + i)).ToString("X2");
+                                    strByte += (Trainer.ReadByte(myProcess, cshellBaseAdress + 0xE389 + i)).ToString("X2");
                                 }
 
-                                LogHandler.WriteLine("Bytes at injection point cshellBaseAdress + 0xEF79 (resolution hack):" + strByte);
+                                LogHandler.WriteLine("Bytes at injection point cshellBaseAdress + 0xE389 (resolution hack):" + strByte);
                             }
 
                             {
                                 string strByte = "";
                                 for (int i = 0; i < 6; i++)
                                 {
-                                    strByte += (Trainer.ReadByte(myProcess, LithTechBaseAdress + 0xC370 + i)).ToString("X2");
+                                    strByte += (Trainer.ReadByte(myProcess, LithTechBaseAdress + 0xB7F4 + i)).ToString("X2");
                                 }
 
-                                LogHandler.WriteLine("Bytes at injection point LithTechBaseAdress + 0xC370 (fov hack):" + strByte);
+                                LogHandler.WriteLine("Bytes at injection point LithTechBaseAdress + 0xB7F4 (fov hack):" + strByte);
                             }
 
                             {
                                 string strByte = "";
                                 for (int i = 0; i < 9; i++)
                                 {
-                                    strByte += (Trainer.ReadByte(myProcess, d3dren + 0x107F2 + i)).ToString("X2");
+                                    strByte += (Trainer.ReadByte(myProcess, d3dren + 0xFA52 + i)).ToString("X2");
                                 }
 
-                                LogHandler.WriteLine("Bytes at injection point d3dren + 0x107F2 (viewmodel hack):" + strByte);
+                                LogHandler.WriteLine("Bytes at injection point d3dren + 0xFA52 (viewmodel hack):" + strByte);
                             }
                             #endregion
 
