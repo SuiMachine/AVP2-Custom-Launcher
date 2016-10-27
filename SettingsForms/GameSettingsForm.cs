@@ -22,6 +22,8 @@ namespace AVP_CustomLauncher
         public bool TripleBuffer = false;
         public float ScaleMenus = 1.0f;
         public bool FixTJunc = false;
+        public bool notificationWindowed = true;
+        public bool notificationToBig = true;
 
         public bool aspectratiohack = false;
         public float fov = 90.0f;
@@ -231,6 +233,8 @@ namespace AVP_CustomLauncher
             }
             B_ManualEdit.Text = text;
             SR.Close();
+            notificationToBig = false;
+            notificationWindowed = false;
         }
         #endregion
 
@@ -282,6 +286,19 @@ namespace AVP_CustomLauncher
             if (int.TryParse(T_ResolutionX.Text, out res))
             {
                 ResolutionX = res;
+
+                if(ResolutionX > 2048 && notificationToBig == false)
+                {
+                    notificationToBig = true;
+                    if(!File.Exists("D3DIM700.DLL"))
+                    {
+                        DialogResult result = MessageBox.Show("For resolutions wider than 2048 you'll need jackfuste's D3DIM700.dll wrapper. Running the game without it, will either crash the game or cause it to start in 640x480. Do you wish to download it?", "Notification", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if(result == DialogResult.Yes)
+                        {
+                            System.Diagnostics.Process.Start("http://www.wsgf.org/forums/viewtopic.php?p=155982#p155982");
+                        }
+                    }
+                }
             }
         }
 
@@ -291,6 +308,18 @@ namespace AVP_CustomLauncher
             if (int.TryParse(T_ResolutionY.Text, out res))
             {
                 ResolutionY = res;
+                if (ResolutionY > 2048 && notificationToBig == false)
+                {
+                    notificationToBig = true;
+                    if (!File.Exists("D3DIM700.DLL"))
+                    {
+                        DialogResult result = MessageBox.Show("For resolutions higher than 2048 you'll need jackfuste's D3DIM700.dll wrapper. Running the game without it, will either crash the game or cause it to start in 640x480. Do you wish to download it?", "Notification", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (result == DialogResult.Yes)
+                        {
+                            System.Diagnostics.Process.Start("http://www.wsgf.org/forums/viewtopic.php?p=155982#p155982");
+                        }
+                    }
+                }
             }
         }
 
@@ -299,7 +328,11 @@ namespace AVP_CustomLauncher
             if (C_Windowed.Checked)
             {
                 windowed = true;
-                //MessageBox.Show("Warning: The game uses V-sync to limit its framerate and has some unintended behaviours when the framerate is uncapped.\n\nSince V-sync doesn't work in windowed mode, make sure to use either GPU control panel setting or external application (like Dxtory) to limit your framerate.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if(!notificationWindowed)
+                {
+                    notificationWindowed = true;
+                    MessageBox.Show("Warning: The game uses V-sync to limit its framerate and has some unintended behaviours when the framerate is uncapped.\n\nSince V-sync doesn't work in windowed mode, make sure to use either GPU control panel setting or external application (like Dxtory) to limit your framerate.", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
 
             else
