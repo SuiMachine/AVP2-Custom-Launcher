@@ -20,6 +20,7 @@ namespace AVP_CustomLauncher
         GameHack _gamehack = new GameHack();
         int _posX = 0;
         int _posY = 0;
+        public bool tbbcbaseCompatibility = false;
 
         public mainform()
         {
@@ -45,10 +46,15 @@ namespace AVP_CustomLauncher
                 }
             }
 
-            if (!File.Exists("widescreenfix.dll"))
+            if (File.Exists("LITHSERVER.REZ"))
+                tbbcbaseCompatibility = true;
+
+            if (!File.Exists("widescreenfix.dll") && !tbbcbaseCompatibility)
             {
                 MessageBox.Show("Widescreenfix.dll has not been found. This file is required for Widescreen support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+
         }
 
         private void CreateGenericAVP2Cmds()
@@ -152,12 +158,18 @@ namespace AVP_CustomLauncher
 
             LogHandler.WriteLine("Launch parameters are: " + cmdlineparamters);
 
-            Thread GameHackThread = new Thread(_gamehack.DoWork);
-            if (_GraphicsSettings.aspectratiohack)
+            if(!tbbcbaseCompatibility)
             {
-                _gamehack.SendValues(_GraphicsSettings.fov, _GraphicsSettings.ResolutionX, _GraphicsSettings.ResolutionY);
-                GameHackThread.Start();
+                Thread GameHackThread = new Thread(_gamehack.DoWork);
+                if (_GraphicsSettings.aspectratiohack)
+                {
+                    _gamehack.SendValues(_GraphicsSettings.fov, _GraphicsSettings.ResolutionX, _GraphicsSettings.ResolutionY);
+                    GameHackThread.Start();
+                }
             }
+            else
+                LogHandler.WriteLine("Widescreen hack was not started due to TBBC AVP2 Multiplayer being installed.");
+
 
             try
             {
@@ -326,6 +338,11 @@ namespace AVP_CustomLauncher
         private void WSGFLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("http://www.wsgf.org/dr/aliens-versus-predator-2-gold-edition");
+        }
+
+        private void tbbcLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://tbbcbase.net");
         }
     }
 }

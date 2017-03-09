@@ -28,6 +28,7 @@ namespace AVP_CustomLauncher
         public bool aspectratiohack = false;
         public float fov = 90.0f;
         string text = "";
+        private bool tbbcCompat = false;
 
         public GameSettings(mainform parent)
         {
@@ -39,6 +40,22 @@ namespace AVP_CustomLauncher
                 readcustomconfig();
 
             readfile();
+            tbbcCompat = parent.tbbcbaseCompatibility;
+
+            if (tbbcCompat)
+                disableNoncompatibleFunctions();
+        }
+
+        private void disableNoncompatibleFunctions()
+        {
+            C_32color.Checked = true;
+            C_32color.Enabled = false;
+            C_32color.Text += " (TBBC)";
+
+            C_EnableAspectRatioMemoryWrite.Checked = false;
+            C_EnableAspectRatioMemoryWrite.Enabled = false;
+            C_EnableAspectRatioMemoryWrite.Text += " (TBBC)";
+
         }
 
         private void GraphicsSettings_Load(object sender, EventArgs e)
