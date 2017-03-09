@@ -3,6 +3,8 @@ obj/
 bin/
 widescreenfix/Debug/
 *.suo
+*.sdf
+*.VC.db
 *.user
 *.vspx
 *.psess

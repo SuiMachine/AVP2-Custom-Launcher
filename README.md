@@ -26,8 +26,6 @@ Patch the game if you haven't already. Download the program from [releases page]
 
 **Note 2**: For running the game on resolutions wider than 2048px you'll need "special" D3DIM700.DLL by jackfuste. It can be found [here](http://www.wsgf.org/forums/viewtopic.php?p=155982#p155982).
 
-**Note 3**: While it may be surprising some some people, I have not tested the launcher with multiplayer. With the master servers being dead for a long time and projects to restore them having suspecious files (says the one, who literally injects DLLs into memory), for me, it's dead.
-
 Credits
 -------
 * [SuicideMachine](http://www.twitch.tv/suicidemachine/)
