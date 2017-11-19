@@ -12,11 +12,11 @@ namespace AVP_CustomLauncher
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] parms)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new mainform());
+            Application.Run(new mainform(parms));
         }
     }
 }
