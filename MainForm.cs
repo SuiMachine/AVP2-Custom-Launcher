@@ -24,6 +24,8 @@ namespace AVP_CustomLauncher
         private bool skipLauncher = false;
         string originalParams = "";
 
+        bool SP_PatchInstalled = false;
+
         public mainform(string[] originalParams)
         {
             if(originalParams.Contains("-skiplauncher", StringComparer.InvariantCultureIgnoreCase))
@@ -43,7 +45,7 @@ namespace AVP_CustomLauncher
         #region Functions
         private void CheckForRequiredGameFiles()
         {
-            string[] files = { "lithtech.exe", "ALIEN.REZ", "AVP2SP.REZ", "AVP2.REZ", "AVP2DLL.REZ", "AVP2L.REZ", "AVP2P1.REZ", "binkw32.dll", "d3d.ren", "MARINE.REZ", "MULTI.REZ", "PREDATOR.REZ", "SOUNDS.REZ" };
+            string[] files = { "lithtech.exe", "ALIEN.REZ", "AVP2.REZ", "AVP2DLL.REZ", "AVP2L.REZ", "AVP2P1.REZ", "binkw32.dll", "d3d.ren", "MARINE.REZ", "MULTI.REZ", "PREDATOR.REZ", "SOUNDS.REZ" };
 
             for (int i = 0; i < files.Length; i++)
             {
@@ -53,6 +55,9 @@ namespace AVP_CustomLauncher
                     Close();
                 }
             }
+
+            if(File.Exists("AVP2SP.REZ"))
+                SP_PatchInstalled = true;
 
             if (File.Exists("LITHSERVER.REZ"))
                 tbbcbaseCompatibility = true;
@@ -67,7 +72,9 @@ namespace AVP_CustomLauncher
 
         private void CreateGenericAVP2Cmds()
         {
-            string output = "-windowtitle \"Aliens vs. Predator 2\" -rez AVP2.rez -rez sounds.rez -rez Alien.rez -rez Marine.rez -rez Predator.rez -rez Multi.rez -rez AVP2dll.rez -rez AVP2l.rez -rez AVP2p.rez -rez AVP2p2.rez -rez AVP2P1.REZ -rez AVP2SP.REZ -rez custom";
+            string output = "-windowtitle \"Aliens vs. Predator 2\" -rez AVP2.rez -rez sounds.rez -rez Alien.rez -rez Marine.rez -rez Predator.rez -rez Multi.rez -rez AVP2dll.rez -rez AVP2l.rez -rez AVP2p.rez -rez AVP2p2.rez -rez AVP2P1.REZ " +
+                (SP_PatchInstalled ? "-rez AVP2SP.REZ ": "") +
+                "-rez custom";
             File.WriteAllText("avp2cmds.txt", output);
         }
 
