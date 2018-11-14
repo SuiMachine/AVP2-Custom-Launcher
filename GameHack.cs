@@ -7,11 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace AVP_CustomLauncher
 {
     class GameHack
     {
+        [DllImport("widescreenfix.dll")]
+        public static extern int GetVariableAddressFromDll();
+
         int LithTechBaseAdress = 0x00400000;
         int cshellBaseAdress = 0x0000000;           //Is changed later, when the app starts running.
         int d3dren = 0x0000000;           //Is changed later, when the app starts running.
@@ -49,9 +53,11 @@ namespace AVP_CustomLauncher
             fovY = HorizontalFOVToVerticalRadians(desiredfov);
             fovX = VerticalRadiansToHorizontalFor4By3Monitor(fovY);
             bgCorrectedValue = correntMenuBGWithAspect(1.308997035f);
+            int variableBaseAddress = GetVariableAddressFromDll();
 
             LogHandler.WriteLine("Launcher directory is: " + path);
             LogHandler.WriteLine("Display FOV calculated to: " + fovX + " horizontal, " + fovY + " vertical");
+            LogHandler.WriteLine("Variables address in DLL is: " + variableBaseAddress.ToString("X4"));
             System.Threading.Thread.Sleep(5000);
 
             while (!_shouldStop)
@@ -164,23 +170,13 @@ namespace AVP_CustomLauncher
                                 }
                             }
                             hookedDllAddress = dllBaseAdressIWant.BaseAddress.ToInt32();
-                            
-                            #if DEBUG
-                            {
-                                LogHandler.WriteLine("DLL Injected at: 0x" + hookedDllAddress.ToString("X4"));
-                                Trainer.WriteInteger(myProcess, hookedDllAddress + 0x19008, ResolutionX);
-                                Trainer.WriteInteger(myProcess, hookedDllAddress + 0x1900C, ResolutionY);
-                                LogHandler.WriteLine("Written to dllHook: " + ResolutionX + "x" + ResolutionY + " at address " + (hookedDllAddress + 0x19008).ToString("X4"));
-                            }
-                            #else
-                            {
-                                //And HOPE NOTHING MOVED
-                                LogHandler.WriteLine("DLL Injected at: 0x" + hookedDllAddress.ToString("X4"));
-                                Trainer.WriteInteger(myProcess, hookedDllAddress + 0x4008, ResolutionX);
-                                Trainer.WriteInteger(myProcess, hookedDllAddress + 0x400C, ResolutionY);
-                                LogHandler.WriteLine("Written to dllHook: " + ResolutionX + "x" + ResolutionY + " at address " + (hookedDllAddress + 0x4008).ToString("X4"));
-                            }
-                            #endif
+
+                            LogHandler.WriteLine("DLL Injected at: 0x" + hookedDllAddress.ToString("X4"));
+                            LogHandler.WriteLine("Writting to memory at: 0x" + (hookedDllAddress + variableBaseAddress).ToString("X4")
+                                + " and 0x" + (hookedDllAddress + variableBaseAddress +4 ).ToString("X4"));
+                            Trainer.WriteInteger(myProcess, hookedDllAddress + variableBaseAddress, ResolutionX);
+                            Trainer.WriteInteger(myProcess, hookedDllAddress + variableBaseAddress+4, ResolutionY);
+                            LogHandler.WriteLine("Written to dllHook: " + ResolutionX + "x" + ResolutionY + " at address " + (hookedDllAddress + 0x19008).ToString("X4"));
                         }
                     }
                     System.Threading.Thread.Sleep(threadDelay);

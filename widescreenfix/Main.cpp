@@ -1,7 +1,5 @@
-#include <Windows.h>
-#include "Functions.h"
 #include "Main.h"
-#include <math.h>
+
 
 static DWORD cshellAddress = 0x0;
 static DWORD baseAddress = (DWORD)0x00400000;
@@ -10,7 +8,6 @@ static DWORD resolutionX = 1024;
 static DWORD resolutionY = 768;
 static DWORD verticalRadians = 0;
 static DWORD horizontalRadians = 0;
-
 
 bool Hook(void * toHook, void * ourFunction, int lenght)
 {
@@ -36,6 +33,12 @@ DWORD jmpViewmodelAddress;
 float horizontalRadiansF;
 float viewmodelFOVRadians;
 bool d3drenHooked = false;
+
+extern "C" __declspec(dllexport) int GetVariableAddressFromDll()
+{
+	MODULEINFO thisModuleInfo = GetModuleInfo("widescreenfix.dll");
+	return (int)&resolutionX - (int)thisModuleInfo.lpBaseOfDll;
+}
 
 static float increaseHorFOV()
 {
@@ -197,14 +200,55 @@ DWORD WINAPI HookThread(LPVOID param)
 	}
 }
 
+static bool SuiString_EndsWith(std::string source, std::string endsWith)
+{
+	if (&source != NULL && &endsWith != NULL && endsWith.length() <= source.length())
+	{
+		int startPos = source.length() - endsWith.length();
+		for (unsigned int i = 0; i < endsWith.length(); i++)
+		{
+			if (source[startPos + i] != endsWith[i])
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	else
+		return false;
+}
+
 BOOL WINAPI DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved)
 {
 	//starts from here
 	switch (dwReason)
 	{
 		case DLL_PROCESS_ATTACH:
-			CreateThread(0, 0, HookThread, hModule, 0, 0);
+		{
+			HMODULE attachedTo = NULL;
+			attachedTo = GetModuleHandle(NULL);
+			if (attachedTo != NULL)
+			{
+				std::string moduleName;
+				{
+					char temp[255];
+					GetModuleFileName(attachedTo, temp, 254);
+					moduleName = temp;
+					std::transform(moduleName.begin(), moduleName.end(), moduleName.begin(), ::tolower);
+				}
+
+				if (SuiString_EndsWith(moduleName, "lithtech.exe"))
+				{
+					CreateThread(0, 0, HookThread, hModule, 0, 0);
+				}
+			}
 			break;
+		}
+		case DLL_PROCESS_DETACH:
+		{
+			FreeLibrary(hModule);
+			break;
+		}
 	}
 
 	return true;

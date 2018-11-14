@@ -40,7 +40,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.pcgwLink = new System.Windows.Forms.LinkLabel();
             this.donatePage = new System.Windows.Forms.LinkLabel();
-            this.tbbcLink = new System.Windows.Forms.LinkLabel();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -65,8 +64,8 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 78F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(381, 457);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 68F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(381, 447);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // B_Exit
@@ -117,7 +116,6 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.tbbcLink);
             this.panel2.Controls.Add(this.WSGFLink);
             this.panel2.Controls.Add(this.projectPageLink);
             this.panel2.Controls.Add(this.label1);
@@ -126,7 +124,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(4, 381);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(375, 72);
+            this.panel2.Size = new System.Drawing.Size(375, 62);
             this.panel2.TabIndex = 5;
             // 
             // WSGFLink
@@ -186,23 +184,11 @@
             this.donatePage.Text = "Donate to developer";
             this.donatePage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.donatePage_LinkClicked);
             // 
-            // tbbcLink
-            // 
-            this.tbbcLink.AutoSize = true;
-            this.tbbcLink.Location = new System.Drawing.Point(2, 51);
-            this.tbbcLink.Name = "tbbcLink";
-            this.tbbcLink.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
-            this.tbbcLink.Size = new System.Drawing.Size(114, 16);
-            this.tbbcLink.TabIndex = 5;
-            this.tbbcLink.TabStop = true;
-            this.tbbcLink.Text = "[TBBC] AVP2 Network";
-            this.tbbcLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.tbbcLink_LinkClicked);
-            // 
             // mainform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(381, 457);
+            this.ClientSize = new System.Drawing.Size(381, 451);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -237,7 +223,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.LinkLabel WSGFLink;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.LinkLabel tbbcLink;
     }
 }
 

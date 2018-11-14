@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 namespace AVP_CustomLauncher
 {
@@ -20,7 +21,6 @@ namespace AVP_CustomLauncher
         GameHack _gamehack = new GameHack();
         int _posX = 0;
         int _posY = 0;
-        public bool tbbcbaseCompatibility = false;
         private bool skipLauncher = false;
         string originalParams = "";
 
@@ -28,7 +28,7 @@ namespace AVP_CustomLauncher
 
         public mainform(string[] originalParams)
         {
-            if(originalParams.Contains("-skiplauncher", StringComparer.InvariantCultureIgnoreCase))
+            if (originalParams.Contains("-skiplauncher", StringComparer.InvariantCultureIgnoreCase))
             {
                 originalParams = originalParams.Where(x => x.ToLower() != "-skiplauncher").ToArray();
                 skipLauncher = true;
@@ -59,15 +59,10 @@ namespace AVP_CustomLauncher
             if(File.Exists("AVP2SP.REZ"))
                 SP_PatchInstalled = true;
 
-            if (File.Exists("LITHSERVER.REZ"))
-                tbbcbaseCompatibility = true;
-
-            if (!File.Exists("widescreenfix.dll") && !tbbcbaseCompatibility)
+            if (!File.Exists("widescreenfix.dll"))
             {
                 MessageBox.Show("Widescreenfix.dll has not been found. This file is required for Widescreen support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
         }
 
         private void CreateGenericAVP2Cmds()
@@ -141,9 +136,7 @@ namespace AVP_CustomLauncher
 
         private void startGame()
         {
-            StreamReader SR = new StreamReader("avp2cmds.txt");
-            string cmdlineparamters = "";
-            cmdlineparamters = SR.ReadToEnd();
+            string cmdlineparamters = File.ReadLines("avp2cmds.txt").FirstOrDefault();
             cmdlineparamters = stripResolutionParameters(cmdlineparamters);
 
             if(_GraphicsSettings.windowed)
@@ -185,25 +178,20 @@ namespace AVP_CustomLauncher
 
             LogHandler.WriteLine("Launch parameters are: " + cmdlineparamters);
 
-            if(!tbbcbaseCompatibility)
+            Thread GameHackThread = new Thread(_gamehack.DoWork);
+            if (_GraphicsSettings.aspectratiohack)
             {
-                Thread GameHackThread = new Thread(_gamehack.DoWork);
-                if(_GraphicsSettings.aspectratiohack)
-                {
-                    _gamehack.SendValues(_GraphicsSettings.fov, _GraphicsSettings.ResolutionX, _GraphicsSettings.ResolutionY);
-                    GameHackThread.Start();
-                }
+                _gamehack.SendValues(_GraphicsSettings.fov, _GraphicsSettings.ResolutionX, _GraphicsSettings.ResolutionY);
+                GameHackThread.Start();
             }
-            else
-                LogHandler.WriteLine("Widescreen hack was not started due to TBBC AVP2 Multiplayer being installed.");
 
 
             try
             {
                 Process gameProcess = new Process();
-                gameProcess.StartInfo.FileName = "Lithtech.exe";
+                gameProcess.StartInfo.FileName = Path.Combine(Directory.GetCurrentDirectory(), "Lithtech.exe");
+                gameProcess.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
                 gameProcess.StartInfo.Arguments = cmdlineparamters;
-                gameProcess.EnableRaisingEvents = true;
                 this.WindowState = FormWindowState.Minimized;
 
                 gameProcess.Start();
@@ -359,17 +347,12 @@ namespace AVP_CustomLauncher
 
         private void donatePage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://www.gamingforgood.net/s/suicidemachine/widget");
+            Process.Start("https://streamlabs.com/suicidemachine");
         }
 
         private void WSGFLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("http://www.wsgf.org/dr/aliens-versus-predator-2-gold-edition");
-        }
-
-        private void tbbcLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("http://tbbcbase.net");
         }
     }
 }
