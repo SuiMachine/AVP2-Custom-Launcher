@@ -24,7 +24,7 @@ Patch the game if you haven't already. Download the program from [releases page]
 
 **Note**: For the program to work properly, Administrator rights may be required (especially for Widescreen hack). You can set it in Compatibility Options.
 
-**Note 2**: For running the game on resolutions wider than 2048px you'll need "special" D3DIM700.DLL by jackfuste. It can be found [here](http://www.wsgf.org/forums/viewtopic.php?p=155982#p155982).
+**Note 2**: For running the game on resolutions wider than 2048px you'll need "special" D3DIM700.DLL by jackfuste. It can be found in ***Over2048pxFix*** directory. Just move it to main directory and hope it works (cause sometimes it seems it doesn't).
 
 Credits
 -------
