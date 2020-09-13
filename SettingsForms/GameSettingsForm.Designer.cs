@@ -139,7 +139,6 @@
             this.TB_FOV.Name = "TB_FOV";
             this.TB_FOV.Size = new System.Drawing.Size(66, 20);
             this.TB_FOV.TabIndex = 5;
-            this.TB_FOV.TextChanged += new System.EventHandler(this.TB_FOV_TextChanged);
             // 
             // C_EnableAspectRatioMemoryWrite
             // 
@@ -232,7 +231,6 @@
             this.C_DisableHardwareCursor.TabIndex = 9;
             this.C_DisableHardwareCursor.Text = "Disable Hardware Cursor";
             this.C_DisableHardwareCursor.UseVisualStyleBackColor = true;
-            this.C_DisableHardwareCursor.CheckedChanged += new System.EventHandler(this.C_DisableHardwareCursor_CheckedChanged);
             // 
             // C_DisableSound
             // 
@@ -243,7 +241,6 @@
             this.C_DisableSound.TabIndex = 8;
             this.C_DisableSound.Text = "Disable Sound";
             this.C_DisableSound.UseVisualStyleBackColor = true;
-            this.C_DisableSound.CheckedChanged += new System.EventHandler(this.C_DisableSound_CheckedChanged);
             // 
             // C_DisableMusic
             // 
@@ -254,7 +251,6 @@
             this.C_DisableMusic.TabIndex = 7;
             this.C_DisableMusic.Text = "Disable Music";
             this.C_DisableMusic.UseVisualStyleBackColor = true;
-            this.C_DisableMusic.CheckedChanged += new System.EventHandler(this.C_DisableMusic_CheckedChanged);
             // 
             // C_DisableLogos
             // 
@@ -265,7 +261,6 @@
             this.C_DisableLogos.TabIndex = 6;
             this.C_DisableLogos.Text = "Disable Logos";
             this.C_DisableLogos.UseVisualStyleBackColor = true;
-            this.C_DisableLogos.CheckedChanged += new System.EventHandler(this.C_DisableLogos_CheckedChanged);
             // 
             // C_DisableTripleBuffering
             // 
@@ -276,7 +271,6 @@
             this.C_DisableTripleBuffering.TabIndex = 5;
             this.C_DisableTripleBuffering.Text = "Disable Triple Buffering";
             this.C_DisableTripleBuffering.UseVisualStyleBackColor = true;
-            this.C_DisableTripleBuffering.CheckedChanged += new System.EventHandler(this.C_DisableTripleBuffering_CheckedChanged);
             // 
             // C_DisableJoystick
             // 
@@ -287,7 +281,6 @@
             this.C_DisableJoystick.TabIndex = 4;
             this.C_DisableJoystick.Text = "Disable Joystick";
             this.C_DisableJoystick.UseVisualStyleBackColor = true;
-            this.C_DisableJoystick.CheckedChanged += new System.EventHandler(this.C_DisableJoystick_CheckedChanged);
             // 
             // label4
             // 
@@ -477,6 +470,7 @@
             this.MinimumSize = new System.Drawing.Size(410, 620);
             this.Name = "GameSettings";
             this.Text = "Game Settings";
+            this.Load += new System.EventHandler(this.GameSettings_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);

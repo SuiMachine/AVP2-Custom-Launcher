@@ -21,11 +21,12 @@ namespace AVP_CustomLauncher
         public bool notificationToBig = true;
 
         //LithFix Variables
-        public bool lithFixEnabled = false;
-        public bool lithFixBorderless = false;
+        public float lithFixBorderless = 1.0f;
         public float lithFixFPSCap = 60.0f;
 
         string text = "";
+
+        private bool BindingsSetUp = false;
 
         public GameSettings(mainform parent)
         {
@@ -36,6 +37,44 @@ namespace AVP_CustomLauncher
             customConfig = Config.CustomConfig.Load();
 
             readfile();
+        }
+
+        private void GameSettings_Load(object sender, EventArgs e)
+        {
+            if(!BindingsSetUp)
+            {
+                //Setup bindings - screw events!
+                this.TB_FOV.DataBindings.Add("Text", customConfig, "FOV", false, DataSourceUpdateMode.OnPropertyChanged);
+                this.C_EnableAspectRatioMemoryWrite.DataBindings.Add("Checked", customConfig, "AspectRatioFix", false, DataSourceUpdateMode.OnPropertyChanged);
+                this.C_Windowed.DataBindings.Add("Checked", customConfig, "Windowed", false, DataSourceUpdateMode.OnPropertyChanged);
+                this.C_DisableSound.DataBindings.Add("Checked", customConfig, "DisableSound", false, DataSourceUpdateMode.OnPropertyChanged);
+                this.C_DisableMusic.DataBindings.Add("Checked", customConfig, "DisableMusic", false, DataSourceUpdateMode.OnPropertyChanged);
+                this.C_DisableLogos.DataBindings.Add("Checked", customConfig, "DisableLogos", false, DataSourceUpdateMode.OnPropertyChanged);
+                this.C_DisableTripleBuffering.DataBindings.Add("Checked", customConfig, "DisableTrippleBuffering", false, DataSourceUpdateMode.OnPropertyChanged);
+                this.C_DisableJoystick.DataBindings.Add("Checked", customConfig, "DisableJoystick", false, DataSourceUpdateMode.OnPropertyChanged);
+                this.C_DisableHardwareCursor.DataBindings.Add("Checked", customConfig, "DisableHardwareCursor", false, DataSourceUpdateMode.OnPropertyChanged);
+                this.C_LithFix_ENABLED.DataBindings.Add("Checked", customConfig, "LithFixEnabled", false, DataSourceUpdateMode.OnPropertyChanged);
+                BindingsSetUp = true;
+            }
+            notificationToBig = false;
+            notificationWindowed = false;
+
+            ToggleHackSpecificEnable();
+            ToggleLithFixSpecificEnable();
+        }
+
+
+        private void ToggleHackSpecificEnable()
+        {
+            TB_FOV.Enabled = C_EnableAspectRatioMemoryWrite.Checked;
+
+
+        }
+
+        private void ToggleLithFixSpecificEnable()
+        {
+            CB_LithFix_Borderless.Enabled = C_LithFix_ENABLED.Checked;
+            num_LithFix_FPSCAP.Enabled = C_LithFix_ENABLED.Checked;
         }
 
         #region ReadFunctions
@@ -52,7 +91,7 @@ namespace AVP_CustomLauncher
             TripleBuffer = false;
             FixTJunc = false;
 
-            while ((line = SR.ReadLine()) != null)                                              //Yes, I know this is slow... does its job for such files anyway
+            while ((line = SR.ReadLine()) != null)
             {
                 if (line.StartsWith("\"SCREENWIDTH\"", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -119,13 +158,13 @@ namespace AVP_CustomLauncher
                         if (float.TryParse(split[1], out float result))
                         {
                             if (result == 1.0f)
-                                lithFixBorderless = true;
+                                lithFixBorderless = 1.0f;
                             else
-                                lithFixBorderless = false;
+                                lithFixBorderless = 0.0f;
                         }
                     }
                     else
-                        lithFixEnabled = false;
+                        lithFixBorderless = 0.0f;
                     continue;
                 }
                 else
@@ -133,8 +172,7 @@ namespace AVP_CustomLauncher
             }
             B_ManualEdit.Text = text;
             SR.Close();
-            notificationToBig = false;
-            notificationWindowed = false;
+
         }
         #endregion
 
@@ -223,16 +261,7 @@ namespace AVP_CustomLauncher
 
         private void C_EnableAspectRatioMemoryWrite_CheckedChanged(object sender, EventArgs e)
         {
-            if (C_EnableAspectRatioMemoryWrite.Checked)
-            {
-                customConfig.AspectRatioFix = true;
-                TB_FOV.Enabled = true;
-            }
-            else
-            {
-                customConfig.AspectRatioFix = false;
-                TB_FOV.Enabled = false;
-            }
+            ToggleHackSpecificEnable();
         }
 
         private void C_32color_CheckedChanged(object sender, EventArgs e)
@@ -242,17 +271,6 @@ namespace AVP_CustomLauncher
             else
                 GameBitDepth = false;
         }
-
-        private void TB_FOV_TextChanged(object sender, EventArgs e)
-        {
-            var res = 90.0f;
-            if (float.TryParse(TB_FOV.Text, out res))
-            {
-                customConfig.FOV = res;
-            }
-        }
-
-
 
         private void B_ManualEdit_TextChanged(object sender, EventArgs e)
         {
@@ -267,45 +285,17 @@ namespace AVP_CustomLauncher
             Close();
         }
 
+        private void CB_LithFix_ENABLED_CheckedChanged(object sender, EventArgs e)
+        {
+            ToggleLithFixSpecificEnable();
+        }
+
         private void B_Cancel_Click(object sender, EventArgs e)
         {
             Close();
         }
-
-        private void C_DisableSound_CheckedChanged(object sender, EventArgs e)
-        {
-            customConfig.DisableSound = C_DisableSound.Checked;
-        }
-
-        private void C_DisableMusic_CheckedChanged(object sender, EventArgs e)
-        {
-            customConfig.DisableMusic = C_DisableMusic.Checked;
-        }
-
-        private void C_DisableLogos_CheckedChanged(object sender, EventArgs e)
-        {
-            customConfig.DisableLogos = C_DisableLogos.Checked;
-        }
-
-        private void C_DisableTripleBuffering_CheckedChanged(object sender, EventArgs e)
-        {
-            customConfig.DisableTrippleBuffering = C_DisableTripleBuffering.Checked;
-        }
-
-        private void C_DisableJoystick_CheckedChanged(object sender, EventArgs e)
-        {
-            customConfig.DisableJoystick = C_DisableJoystick.Checked;
-        }
-
-        private void C_DisableHardwareCursor_CheckedChanged(object sender, EventArgs e)
-        {
-            customConfig.DisableHardwareCursor = C_DisableHardwareCursor.Checked;
-        }
         #endregion
 
-        private void CB_LithFix_ENABLED_CheckedChanged(object sender, EventArgs e)
-        {
-            CB_LithFix_Borderless.Enabled = C_LithFix_ENABLED.Checked;
-        }
+
     }
 }

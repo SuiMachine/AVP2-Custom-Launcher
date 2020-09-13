@@ -23,9 +23,12 @@ namespace AVP_CustomLauncher.Config
         [CustomFormatElement] public bool DisableHardwareCursor { get; set; }
         [CustomFormatElement] public bool AspectRatioFix { get; set; }
         [CustomFormatElement] public float FOV { get; set; }
+        [CustomFormatElement] public bool LithFixEnabled { get; set; }
+
         [CustomFormatElement] public int PositionX { get; set; }
         [CustomFormatElement] public int PositionY { get; set; }
         [CustomFormatElement] public string CVARS { get; set; }
+
 
         public CustomConfig()
         {
@@ -40,6 +43,7 @@ namespace AVP_CustomLauncher.Config
             FOV = 90;
             PositionX = 0;
             PositionY = 0;
+            LithFixEnabled = false;
             CVARS = "";
         }
 
@@ -65,7 +69,7 @@ namespace AVP_CustomLauncher.Config
             CustomFormatSerializer serializer = new CustomFormatSerializer(typeof(CustomFormatElement));
             if (!Directory.Exists(Directory.GetDirectoryRoot(FILEPATH)))
                 Directory.CreateDirectory(FILEPATH);
-            StreamWriter fw = new StreamWriter("text.cfg");
+            StreamWriter fw = new StreamWriter(FILEPATH);
             serializer.Serialize(fw, this);
             fw.Close();
         }
