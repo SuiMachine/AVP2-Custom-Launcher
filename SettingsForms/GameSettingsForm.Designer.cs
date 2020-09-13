@@ -48,26 +48,44 @@
             this.C_DisableLogos = new System.Windows.Forms.CheckBox();
             this.C_DisableTripleBuffering = new System.Windows.Forms.CheckBox();
             this.C_DisableJoystick = new System.Windows.Forms.CheckBox();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.T_CommandLine = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.T_CommandLine = new System.Windows.Forms.TextBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.CB_LithFix_Borderless = new System.Windows.Forms.CheckBox();
+            this.C_LithFix_ENABLED = new System.Windows.Forms.CheckBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.num_LithFix_FPSCAP = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel6.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_LithFix_FPSCAP)).BeginInit();
             this.SuspendLayout();
             // 
             // B_ManualEdit
             // 
-            this.B_ManualEdit.Location = new System.Drawing.Point(12, 226);
+            this.B_ManualEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.B_ManualEdit.Location = new System.Drawing.Point(3, 311);
             this.B_ManualEdit.Name = "B_ManualEdit";
-            this.B_ManualEdit.Size = new System.Drawing.Size(368, 276);
+            this.B_ManualEdit.Size = new System.Drawing.Size(388, 231);
             this.B_ManualEdit.TabIndex = 0;
             this.B_ManualEdit.Text = "";
             this.B_ManualEdit.TextChanged += new System.EventHandler(this.B_ManualEdit_TextChanged);
             // 
             // panel1
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.C_32color);
             this.panel1.Controls.Add(this.C_Windowed);
             this.panel1.Controls.Add(this.label3);
@@ -77,9 +95,10 @@
             this.panel1.Controls.Add(this.T_ResolutionY);
             this.panel1.Controls.Add(this.T_ResolutionX);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(12, 12);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(181, 148);
+            this.panel1.Size = new System.Drawing.Size(188, 144);
             this.panel1.TabIndex = 1;
             // 
             // C_32color
@@ -161,15 +180,17 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label1.Location = new System.Drawing.Point(3, 1);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 13);
+            this.label1.Size = new System.Drawing.Size(71, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Resolution:";
             // 
             // B_SaveAndClose
             // 
-            this.B_SaveAndClose.Location = new System.Drawing.Point(100, 508);
+            this.B_SaveAndClose.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.B_SaveAndClose.Location = new System.Drawing.Point(98, 3);
             this.B_SaveAndClose.Name = "B_SaveAndClose";
             this.B_SaveAndClose.Size = new System.Drawing.Size(93, 23);
             this.B_SaveAndClose.TabIndex = 2;
@@ -179,7 +200,8 @@
             // 
             // B_Cancel
             // 
-            this.B_Cancel.Location = new System.Drawing.Point(199, 508);
+            this.B_Cancel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.B_Cancel.Location = new System.Drawing.Point(197, 3);
             this.B_Cancel.Name = "B_Cancel";
             this.B_Cancel.Size = new System.Drawing.Size(93, 23);
             this.B_Cancel.TabIndex = 3;
@@ -189,16 +211,16 @@
             // 
             // panel2
             // 
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.C_DisableHardwareCursor);
             this.panel2.Controls.Add(this.C_DisableSound);
             this.panel2.Controls.Add(this.C_DisableMusic);
             this.panel2.Controls.Add(this.C_DisableLogos);
             this.panel2.Controls.Add(this.C_DisableTripleBuffering);
             this.panel2.Controls.Add(this.C_DisableJoystick);
-            this.panel2.Location = new System.Drawing.Point(199, 12);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(197, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(181, 148);
+            this.panel2.Size = new System.Drawing.Size(188, 144);
             this.panel2.TabIndex = 9;
             // 
             // C_DisableHardwareCursor
@@ -267,56 +289,210 @@
             this.C_DisableJoystick.UseVisualStyleBackColor = true;
             this.C_DisableJoystick.CheckedChanged += new System.EventHandler(this.C_DisableJoystick_CheckedChanged);
             // 
-            // panel3
+            // label4
             // 
-            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel3.Controls.Add(this.label4);
-            this.panel3.Controls.Add(this.T_CommandLine);
-            this.panel3.Location = new System.Drawing.Point(12, 166);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(368, 54);
-            this.panel3.TabIndex = 10;
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label4.Location = new System.Drawing.Point(3, 3);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(155, 13);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Command-line parameters:";
             // 
             // T_CommandLine
             // 
-            this.T_CommandLine.Location = new System.Drawing.Point(4, 25);
+            this.T_CommandLine.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.T_CommandLine.Location = new System.Drawing.Point(3, 22);
             this.T_CommandLine.Name = "T_CommandLine";
-            this.T_CommandLine.Size = new System.Drawing.Size(356, 20);
+            this.T_CommandLine.Size = new System.Drawing.Size(382, 20);
             this.T_CommandLine.TabIndex = 0;
-            this.T_CommandLine.TextChanged += new System.EventHandler(this.T_CommandLine_TextChanged);
             // 
-            // label4
+            // tableLayoutPanel1
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(4, 5);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(131, 13);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "Command-line parameters:";
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.B_ManualEdit, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel4, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel5, 0, 2);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 156F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(394, 581);
+            this.tableLayoutPanel1.TabIndex = 11;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Controls.Add(this.panel1, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.panel2, 1, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(388, 150);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.T_CommandLine, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.label4, 0, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 159);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 19F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(388, 46);
+            this.tableLayoutPanel3.TabIndex = 11;
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Controls.Add(this.B_Cancel, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.B_SaveAndClose, 0, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 548);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(388, 30);
+            this.tableLayoutPanel4.TabIndex = 12;
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 1;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.Controls.Add(this.label5, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 0, 1);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 211);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 2;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(388, 94);
+            this.tableLayoutPanel5.TabIndex = 13;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label5.Location = new System.Drawing.Point(3, 5);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(188, 13);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "LithFix by HeyJake (if installed):";
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.ColumnCount = 2;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.Controls.Add(this.CB_LithFix_Borderless, 1, 0);
+            this.tableLayoutPanel6.Controls.Add(this.C_LithFix_ENABLED, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.panel3, 0, 1);
+            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 27);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 2;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(382, 64);
+            this.tableLayoutPanel6.TabIndex = 3;
+            // 
+            // CB_LithFix_Borderless
+            // 
+            this.CB_LithFix_Borderless.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.CB_LithFix_Borderless.AutoSize = true;
+            this.CB_LithFix_Borderless.Location = new System.Drawing.Point(194, 3);
+            this.CB_LithFix_Borderless.Name = "CB_LithFix_Borderless";
+            this.CB_LithFix_Borderless.Size = new System.Drawing.Size(149, 17);
+            this.CB_LithFix_Borderless.TabIndex = 1;
+            this.CB_LithFix_Borderless.Text = "Enable borderless window";
+            this.CB_LithFix_Borderless.UseVisualStyleBackColor = true;
+            // 
+            // C_LithFix_ENABLED
+            // 
+            this.C_LithFix_ENABLED.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.C_LithFix_ENABLED.AutoSize = true;
+            this.C_LithFix_ENABLED.Location = new System.Drawing.Point(3, 3);
+            this.C_LithFix_ENABLED.Name = "C_LithFix_ENABLED";
+            this.C_LithFix_ENABLED.Size = new System.Drawing.Size(142, 17);
+            this.C_LithFix_ENABLED.TabIndex = 0;
+            this.C_LithFix_ENABLED.Text = "Enable (add \"-rez lithfix\")";
+            this.C_LithFix_ENABLED.UseVisualStyleBackColor = true;
+            this.C_LithFix_ENABLED.CheckedChanged += new System.EventHandler(this.CB_LithFix_ENABLED_CheckedChanged);
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.num_LithFix_FPSCAP);
+            this.panel3.Controls.Add(this.label6);
+            this.panel3.Location = new System.Drawing.Point(3, 27);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(185, 34);
+            this.panel3.TabIndex = 2;
+            // 
+            // num_LithFix_FPSCAP
+            // 
+            this.num_LithFix_FPSCAP.Location = new System.Drawing.Point(92, 6);
+            this.num_LithFix_FPSCAP.Name = "num_LithFix_FPSCAP";
+            this.num_LithFix_FPSCAP.Size = new System.Drawing.Size(86, 20);
+            this.num_LithFix_FPSCAP.TabIndex = 1;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 8);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(77, 13);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "Max framerate:";
             // 
             // GameSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(393, 543);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.B_Cancel);
-            this.Controls.Add(this.B_SaveAndClose);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.B_ManualEdit);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.ClientSize = new System.Drawing.Size(394, 581);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(410, 620);
             this.Name = "GameSettings";
             this.Text = "Game Settings";
-            this.Load += new System.EventHandler(this.GraphicsSettings_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
+            this.tableLayoutPanel6.ResumeLayout(false);
+            this.tableLayoutPanel6.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_LithFix_FPSCAP)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -343,8 +519,19 @@
         private System.Windows.Forms.CheckBox C_DisableLogos;
         private System.Windows.Forms.CheckBox C_DisableTripleBuffering;
         private System.Windows.Forms.CheckBox C_DisableJoystick;
-        private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.TextBox T_CommandLine;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
+        private System.Windows.Forms.CheckBox CB_LithFix_Borderless;
+        private System.Windows.Forms.CheckBox C_LithFix_ENABLED;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.NumericUpDown num_LithFix_FPSCAP;
+        private System.Windows.Forms.Label label6;
     }
 }

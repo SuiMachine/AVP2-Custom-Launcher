@@ -28,6 +28,12 @@ namespace AVP_CustomLauncher
 
         public mainform(string[] originalParams)
         {
+            var newConfig = Config.CustomConfig.Load();
+            newConfig.Save();
+
+
+
+
             if (originalParams.Contains("-skiplauncher", StringComparer.InvariantCultureIgnoreCase))
             {
                 originalParams = originalParams.Where(x => x.ToLower() != "-skiplauncher").ToArray();
@@ -139,37 +145,37 @@ namespace AVP_CustomLauncher
             string cmdlineparamters = File.ReadLines("avp2cmds.txt").FirstOrDefault();
             cmdlineparamters = stripResolutionParameters(cmdlineparamters);
 
-            if(_GraphicsSettings.windowed)
+            if(_GraphicsSettings.customConfig.Windowed)
                 cmdlineparamters = cmdlineparamters + " +windowed 1";
             else
                 cmdlineparamters = cmdlineparamters + " +windowed 0";
 
-            if(_GraphicsSettings.disablesound)
+            if(_GraphicsSettings.customConfig.DisableSound)
                 cmdlineparamters = cmdlineparamters + " +DisableSound 1";
             else
                 cmdlineparamters = cmdlineparamters + " +DisableSound 0";
 
-            if(_GraphicsSettings.disablemusic)
+            if(_GraphicsSettings.customConfig.DisableMusic)
                 cmdlineparamters = cmdlineparamters + " +DisableMusic 1";
             else
                 cmdlineparamters = cmdlineparamters + " +DisableMusic 0";
 
-            if(_GraphicsSettings.disablelogos)
+            if(_GraphicsSettings.customConfig.DisableLogos)
                 cmdlineparamters = cmdlineparamters + " +DisableMovies 1";
             else
                 cmdlineparamters = cmdlineparamters + " +DisableMovies 0";
 
-            if(_GraphicsSettings.disablejoystick)
+            if(_GraphicsSettings.customConfig.DisableJoystick)
                 cmdlineparamters = cmdlineparamters + " +DisableJoystick 1";
             else
                 cmdlineparamters = cmdlineparamters + " +DisableJoystick 0";
 
-            if(_GraphicsSettings.disabletripplebuffering)
+            if(_GraphicsSettings.customConfig.DisableTrippleBuffering)
                 cmdlineparamters = cmdlineparamters + " +EnableTripBuf 0";
             else
                 cmdlineparamters = cmdlineparamters + " +EnableTripBuf 1";
 
-            if(_GraphicsSettings.disablehardwarecursor)
+            if(_GraphicsSettings.customConfig.DisableHardwareCursor)
                 cmdlineparamters = cmdlineparamters + " +DisableHardwareCursor 1";
             else
                 cmdlineparamters = cmdlineparamters + " +DisableHardwareCursor 0";
@@ -179,9 +185,9 @@ namespace AVP_CustomLauncher
             LogHandler.WriteLine("Launch parameters are: " + cmdlineparamters);
 
             Thread GameHackThread = new Thread(_gamehack.DoWork);
-            if (_GraphicsSettings.aspectratiohack)
+            if (_GraphicsSettings.customConfig.AspectRatioFix)
             {
-                _gamehack.SendValues(_GraphicsSettings.fov, _GraphicsSettings.ResolutionX, _GraphicsSettings.ResolutionY);
+                _gamehack.SendValues(_GraphicsSettings.customConfig.FOV, _GraphicsSettings.ResolutionX, _GraphicsSettings.ResolutionY);
                 GameHackThread.Start();
             }
 

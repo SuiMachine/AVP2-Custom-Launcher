@@ -8,16 +8,11 @@ namespace AVP_CustomLauncher
     public partial class GameSettings : Form
     {
         const string autoexecfile = "autoexec.cfg";
-        const string customConfig = "autoexecextended.cfg";
+        //const string customConfig = "autoexecextended.cfg";
+        public Config.CustomConfig customConfig { get; set; }
+
         public int ResolutionX { get; set; }
         public int ResolutionY { get; set; }
-        public bool windowed = false;
-        public bool disablemusic = false;
-        public bool disablesound = false;
-        public bool disablelogos = false;
-        public bool disabletripplebuffering = false;
-        public bool disablejoystick = true;
-        public bool disablehardwarecursor = false;
         public bool GameBitDepth = true;
         public bool TripleBuffer = false;
         public float ScaleMenus = 1.0f;
@@ -25,8 +20,11 @@ namespace AVP_CustomLauncher
         public bool notificationWindowed = true;
         public bool notificationToBig = true;
 
-        public bool aspectratiohack = false;
-        public float fov = 90.0f;
+        //LithFix Variables
+        public bool lithFixEnabled = false;
+        public bool lithFixBorderless = false;
+        public float lithFixFPSCap = 60.0f;
+
         string text = "";
 
         public GameSettings(mainform parent)
@@ -35,129 +33,12 @@ namespace AVP_CustomLauncher
             ResolutionY = 720;
             InitializeComponent();
 
-            if (File.Exists(customConfig))
-                readcustomconfig();
+            customConfig = Config.CustomConfig.Load();
 
             readfile();
         }
 
-
-
-        private void GraphicsSettings_Load(object sender, EventArgs e)
-        {
-        }
-
         #region ReadFunctions
-        public void readcustomconfig()
-        {
-            StreamReader SR = new StreamReader(customConfig);
-            string line = "";
-
-            while((line = SR.ReadLine()) != null)
-            {
-                string[] words = line.Split(':');
-                if (words[0] == "Windowed")
-                {
-                    if(words[1] == "True")
-                    {
-                        C_Windowed.Checked = true;
-                    }
-                    else
-                    {
-                        C_Windowed.Checked = false;
-                    }
-                }
-                else if (words[0] == "DisableSound")
-                {
-                    if(words[1] == "True")
-                    {
-                        C_DisableSound.Checked = true;
-                    }
-                    else
-                    {
-                        C_DisableSound.Checked = false;
-                    }
-                }
-                else if (words[0] == "DisableMusic")
-                {
-                    if (words[1] == "True")
-                    {
-                        C_DisableMusic.Checked = true;
-                    }
-                    else
-                    {
-                        C_DisableMusic.Checked = false;
-                    }
-                }
-                else if (words[0] == "DisableLogos")
-                {
-                    if (words[1] == "True")
-                    {
-                        C_DisableLogos.Checked = true;
-                    }
-                    else
-                    {
-                        C_DisableLogos.Checked = false;
-                    }
-                }
-                else if (words[0] == "DisableTrippleBuffering")
-                {
-                    if (words[1] == "True")
-                    {
-                        C_DisableTripleBuffering.Checked = true;
-                    }
-                    else
-                    {
-                        C_DisableTripleBuffering.Checked = false;
-                    }
-                }
-                else if (words[0] == "DisableJoystick")
-                {
-                    if (words[1] == "True")
-                    {
-                        C_DisableJoystick.Checked = true;
-                    }
-                    else
-                    {
-                        C_DisableJoystick.Checked = false;
-                    }
-                }
-                else if (words[0] == "DisableHardwareCursor")
-                {
-                    if (words[1] == "True")
-                    {
-                        C_DisableHardwareCursor.Checked = true;
-                    }
-                    else
-                    {
-                        C_DisableHardwareCursor.Checked = false;
-                    }
-                }
-                else if (words[0] == "AspectRatioFix")
-                {
-                    if (words[1] == "True")
-                    {
-                        C_EnableAspectRatioMemoryWrite.Checked = true;
-                    }
-                    else
-                    {
-                        C_EnableAspectRatioMemoryWrite.Checked = false;
-                    }
-                }
-                else if (words[0] == "FOV")
-                {
-                    TB_FOV.Text = words[1];     //Nothing else needed, cause it's getting parsed, when the text changes.
-                }
-                else if (words[0] == "CVARS")
-                {
-                    T_CommandLine.Text = words[1];
-                }
-            }
-            SR.Close();
-
-        }
-
-
         public void readfile()
         {
             StreamReader SR = new StreamReader(autoexecfile);
@@ -230,6 +111,23 @@ namespace AVP_CustomLauncher
 
                     continue;
                 }
+                else if (line.StartsWith("\"lf_borderless_window\"", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if(line.Contains(" "))
+                    {
+                        var split = line.Split(new char[] { ' ' }, 2);
+                        if (float.TryParse(split[1], out float result))
+                        {
+                            if (result == 1.0f)
+                                lithFixBorderless = true;
+                            else
+                                lithFixBorderless = false;
+                        }
+                    }
+                    else
+                        lithFixEnabled = false;
+                    continue;
+                }
                 else
                     text = text + line + "\n";
             }
@@ -241,23 +139,6 @@ namespace AVP_CustomLauncher
         #endregion
 
         #region SaveFunctions
-        private void savecustomconfig()
-        {
-            string output = "";
-            output += "Windowed:" + windowed.ToString() + "\n";
-            output += "DisableSound:" + disablesound.ToString() + "\n";            
-            output += "DisableMusic:" + disablemusic.ToString() + "\n";
-            output += "DisableLogos:" + disablelogos.ToString() + "\n";
-            output += "DisableTrippleBuffering:" + disabletripplebuffering.ToString() + "\n";
-            output += "DisableJoystick:" + disablejoystick.ToString() + "\n";
-            output += "DisableHardwareCursor:" + disablehardwarecursor.ToString() + "\n";
-            output += "AspectRatioFix:" + aspectratiohack.ToString() + "\n";
-            output += "FOV:" + fov.ToString() + "\n";
-            output += "CVARS:" + T_CommandLine.Text + "\n";
-
-            File.WriteAllText(customConfig, output);
-        }
-
         private void savefile()
         {
             string output = "";
@@ -329,31 +210,29 @@ namespace AVP_CustomLauncher
         {
             if (C_Windowed.Checked)
             {
-                windowed = true;
+                customConfig.Windowed = true;
                 if(!notificationWindowed)
                 {
                     notificationWindowed = true;
                     MessageBox.Show("Warning: The game uses V-sync to limit its framerate and has some unintended behaviours when the framerate is uncapped.\n\nSince V-sync doesn't work in windowed mode, make sure to use either GPU control panel setting or external application (like Dxtory) to limit your framerate.", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-
             else
-                windowed = false;
+                customConfig.Windowed = false;
         }
 
         private void C_EnableAspectRatioMemoryWrite_CheckedChanged(object sender, EventArgs e)
         {
             if (C_EnableAspectRatioMemoryWrite.Checked)
             {
-                aspectratiohack = true;
+                customConfig.AspectRatioFix = true;
                 TB_FOV.Enabled = true;
             }
             else
             {
-                aspectratiohack = false;
+                customConfig.AspectRatioFix = false;
                 TB_FOV.Enabled = false;
             }
-
         }
 
         private void C_32color_CheckedChanged(object sender, EventArgs e)
@@ -369,7 +248,7 @@ namespace AVP_CustomLauncher
             var res = 90.0f;
             if (float.TryParse(TB_FOV.Text, out res))
             {
-                fov = res;
+                customConfig.FOV = res;
             }
         }
 
@@ -382,7 +261,8 @@ namespace AVP_CustomLauncher
 
         private void B_SaveAndClose_Click(object sender, EventArgs e)
         {
-            savecustomconfig();
+            customConfig.CVARS = T_CommandLine.Text;
+            customConfig.Save();
             savefile();
             Close();
         }
@@ -394,56 +274,38 @@ namespace AVP_CustomLauncher
 
         private void C_DisableSound_CheckedChanged(object sender, EventArgs e)
         {
-            if (C_DisableSound.Checked)
-                disablesound = true;
-            else
-                disablesound = false;
+            customConfig.DisableSound = C_DisableSound.Checked;
         }
 
         private void C_DisableMusic_CheckedChanged(object sender, EventArgs e)
         {
-            if (C_DisableMusic.Checked)
-                disablemusic = true;
-            else
-                disablemusic = false;
+            customConfig.DisableMusic = C_DisableMusic.Checked;
         }
 
         private void C_DisableLogos_CheckedChanged(object sender, EventArgs e)
         {
-            if (C_DisableLogos.Checked)
-                disablelogos = true;
-            else
-                disablelogos = false;
+            customConfig.DisableLogos = C_DisableLogos.Checked;
         }
 
         private void C_DisableTripleBuffering_CheckedChanged(object sender, EventArgs e)
         {
-            if (C_DisableTripleBuffering.Checked)
-                disabletripplebuffering = true;
-            else
-                disabletripplebuffering = false;
+            customConfig.DisableTrippleBuffering = C_DisableTripleBuffering.Checked;
         }
 
         private void C_DisableJoystick_CheckedChanged(object sender, EventArgs e)
         {
-            if (C_DisableJoystick.Checked)
-                disablejoystick = true;
-            else
-                disablejoystick = false;
+            customConfig.DisableJoystick = C_DisableJoystick.Checked;
         }
 
         private void C_DisableHardwareCursor_CheckedChanged(object sender, EventArgs e)
         {
-            if (C_DisableHardwareCursor.Checked)
-                disablehardwarecursor = true;
-            else
-                disablehardwarecursor = false;
-        }
-
-        private void T_CommandLine_TextChanged(object sender, EventArgs e)
-        {
-
+            customConfig.DisableHardwareCursor = C_DisableHardwareCursor.Checked;
         }
         #endregion
+
+        private void CB_LithFix_ENABLED_CheckedChanged(object sender, EventArgs e)
+        {
+            CB_LithFix_Borderless.Enabled = C_LithFix_ENABLED.Checked;
+        }
     }
 }
