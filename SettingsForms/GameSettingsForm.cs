@@ -8,8 +8,8 @@ namespace AVP_CustomLauncher
     public partial class GameSettings : Form
     {
         const string autoexecfile = "autoexec.cfg";
-        //const string customConfig = "autoexecextended.cfg";
         public Config.CustomConfig customConfig { get; set; }
+        public Config.LithTechConfig lithTechConfig { get; set; }
 
         public int ResolutionX { get; set; }
         public int ResolutionY { get; set; }
@@ -35,6 +35,7 @@ namespace AVP_CustomLauncher
             InitializeComponent();
 
             customConfig = Config.CustomConfig.Load();
+            lithTechConfig = Config.LithTechConfig.Load();
 
             readfile();
         }

@@ -92,10 +92,12 @@
       <DependentUpon>ConfigChoice.cs</DependentUpon>
     </Compile>
     <Compile Include="Config\CustomConfig.cs" />
+    <Compile Include="Config\LithTechConfig.cs" />
     <Compile Include="DLLInjector.cs" />
     <Compile Include="GameHack.cs" />
     <Compile Include="LogHandler.cs" />
-    <Compile Include="Serializers\CustomFormat.cs" />
+    <Compile Include="Serializers\CustomFormatSerializer.cs" />
+    <Compile Include="Serializers\LithTechFormatSerializer.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsForms\GameSettingsForm.cs">
       <SubType>Form</SubType>

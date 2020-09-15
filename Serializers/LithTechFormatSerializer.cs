@@ -1,20 +1,18 @@
-﻿using AVP_CustomLauncher.Config;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AVP_CustomLauncher.Serializers
 {
-    internal class CustomFormatSerializer
+    class LithTechFormatSerializer
     {
         private Type type;
 
-        public CustomFormatSerializer(Type type)
+        public LithTechFormatSerializer(Type type)
         {
             this.type = type;
         }
@@ -27,10 +25,10 @@ namespace AVP_CustomLauncher.Serializers
             while (!streamReader.EndOfStream)
             {
                 var line = streamReader.ReadLine();
-                if (line.Contains(":"))
+                if (line.Contains(" "))
                 {
-                    var split = line.Split(new char[] { ':' }, 2);
-                    deserializedObjects.Add(new Data() { PropertyName = split[0], Value = split[1] });
+                    var split = line.Split(new char[] { ' ' }, 2);
+                    deserializedObjects.Add(new Data() { PropertyName = split[0].Trim(new char[] { '\"' }), Value = split[1].Trim(new char[] { '\"' }) });
                 }
             }
             streamReader.Close();
@@ -59,7 +57,7 @@ namespace AVP_CustomLauncher.Serializers
             foreach (var prop in props)
             {
                 var isTagged = prop.GetCustomAttribute<CustomFormatElement>();
-                if(isTagged != null)
+                if (isTagged != null)
                 {
                     var propValue = prop.GetValue(customConfig, null);
                     fw.WriteLine(prop.Name + ":" + propValue);
@@ -67,11 +65,23 @@ namespace AVP_CustomLauncher.Serializers
 
             }
             fw.WriteLine();
-            fw.Close();            
+            fw.Close();
         }
     }
 
-    internal class CustomFormatElement : Attribute
+    internal class LithTechConfigValue : Attribute
+    {
+    }
+
+    internal class LithTechConfigAction : Attribute
+    {
+    }
+
+    internal class LithTechConfigBinding : Attribute
+    {
+    }
+
+    internal class LithTechConfigOther : Attribute
     {
     }
 }
