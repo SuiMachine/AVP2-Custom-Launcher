@@ -30,9 +30,6 @@ namespace AVP_CustomLauncher
 
         public mainform(string[] originalParams)
         {
-            customConfig = Config.CustomConfig.Load();
-            lithTechConfig = Config.LithTechConfig.Load();
-
             if (originalParams.Contains("-skiplauncher", StringComparer.InvariantCultureIgnoreCase))
             {
                 originalParams = originalParams.Where(x => x.ToLower() != "-skiplauncher").ToArray();
@@ -41,10 +38,6 @@ namespace AVP_CustomLauncher
             this.originalParams = string.Join(" ", originalParams);
             LogHandler.WriteLine("LogFile created.");
             InitializeComponent();
-            if (File.Exists("autoexecextended.cfg"))
-            {
-                SetPositionFromConfig();
-            }
         }
 
         #region Functions
@@ -72,9 +65,8 @@ namespace AVP_CustomLauncher
 
         private void CreateGenericAVP2Cmds()
         {
-            string output = "-windowtitle \"Aliens vs. Predator 2\" -rez AVP2.rez -rez sounds.rez -rez Alien.rez -rez Marine.rez -rez Predator.rez -rez Multi.rez -rez AVP2dll.rez -rez AVP2l.rez -rez AVP2p.rez -rez AVP2p2.rez -rez AVP2P1.REZ " +
-                (SP_PatchInstalled ? "-rez AVP2SP.REZ ": "") +
-                "-rez custom";
+            string output = "-windowtitle \"Aliens vs. Predator 2\" -rez AVP2.rez -rez sounds.rez -rez Alien.rez -rez Marine.rez -rez Predator.rez -rez Multi.rez -rez AVP2dll.rez -rez AVP2l.rez -rez custom -rez AVP2p.rez -rez AVP2p2.rez -rez AVP2P1.REZ " +
+                (SP_PatchInstalled ? "-rez AVP2SP.REZ " : "");
             File.WriteAllText("avp2cmds.txt", output);
         }
 
@@ -103,14 +95,18 @@ namespace AVP_CustomLauncher
                 _ConfigChoice.ShowDialog();
             }
 
+            customConfig = Config.CustomConfig.Load();
+            lithTechConfig = Config.LithTechConfig.Load();
+
             if (!File.Exists("avp2cmds.txt"))
             {
                 MessageBox.Show("No avp2cmds.txt found. The launcher will try to create it based on files in your current directory.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 CreateGenericAVP2Cmds();
             }
 
+            SetPositionFromConfig();
 
-            if(skipLauncher)
+            if (skipLauncher)
             {
                 this.WindowState = FormWindowState.Minimized;
                 StartGame();
@@ -121,9 +117,6 @@ namespace AVP_CustomLauncher
         {
             StartGame();
         }
-
-
-        //        GameSettings _GraphicsSettings;
 
         private void StartGame()
         {
@@ -165,6 +158,9 @@ namespace AVP_CustomLauncher
             else
                 cmdlineparamters += " +DisableHardwareCursor 0";
 
+            if (customConfig.LithFixEnabled)
+                cmdlineparamters += " -rez lithfix";
+
 			cmdlineparamters += $" {originalParams} {customConfig.CVARS}";
 
             LogHandler.WriteLine("Launch parameters are: " + cmdlineparamters);
@@ -172,10 +168,9 @@ namespace AVP_CustomLauncher
             Thread GameHackThread = new Thread(_gamehack.DoWork);
             if (customConfig.AspectRatioFix)
             {
-                _gamehack.SendValues(customConfig.FOV, (int)lithTechConfig.GameScreenWidth, (int)lithTechConfig.GameScreenHeight);
+                _gamehack.SendValues(customConfig.FOV, (int)lithTechConfig.GameScreenWidth, (int)lithTechConfig.GameScreenHeight, customConfig.LithFixEnabled);
                 GameHackThread.Start();
             }
-
 
             try
             {
@@ -253,6 +248,8 @@ namespace AVP_CustomLauncher
 
         private void Mainform_FormClosing(object sender, FormClosingEventArgs e)
         {
+            customConfig.PositionX = (uint)_posX;
+            customConfig.PositionY = (uint)_posY;
             customConfig.Save();
             LogHandler.Close();
         }

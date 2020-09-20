@@ -67,10 +67,7 @@ namespace AVP_CustomLauncher
 				return DllInjectionResult.DllNotFound;
 			}
 
-			uint _procId = 0;
-
-
-			_procId = (uint)_procs[0].Id;
+			uint _procId = (uint)_procs[0].Id;
 
 			if (_procId == 0)
 			{

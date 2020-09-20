@@ -7,18 +7,12 @@ namespace AVP_CustomLauncher
 {
 	public partial class GameSettings : Form
 	{
-		const string autoexecfile = "autoexec.cfg";
 		public Config.CustomConfig customConfig;
 		public Config.LithTechConfig lithTechConfig;
 
-		public bool TripleBuffer = false;
-		public float ScaleMenus = 1.0f;
 		public bool notificationWindowed = true;
 		public bool notificationToBig = true;
 
-		//LithFix Variables
-		public float lithFixBorderless = 1.0f;
-		public float lithFixFPSCap = 60.0f;
 
 		public GameSettings(Config.CustomConfig customConfig, Config.LithTechConfig lithTechConfig)
 		{
