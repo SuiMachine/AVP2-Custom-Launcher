@@ -97,7 +97,6 @@
     <Compile Include="GameHack.cs" />
     <Compile Include="LogHandler.cs" />
     <Compile Include="Serializers\CustomFormatSerializer.cs" />
-    <Compile Include="Serializers\LithTechFormatSerializer.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsForms\GameSettingsForm.cs">
       <SubType>Form</SubType>

@@ -7,7 +7,7 @@ namespace AVP_CustomLauncher.Config
 	[Serializable]
 	public class CustomConfig
 	{
-		static string FILEPATH = "autoexecextended.cfg";
+		static readonly string FILEPATH = "autoexecextended.cfg";
 
 		[CustomFormatElement] public bool Windowed { get; set; }
 		[CustomFormatElement] public bool DisableSound { get; set; }
@@ -20,8 +20,8 @@ namespace AVP_CustomLauncher.Config
 		[CustomFormatElement] public float FOV { get; set; }
 		[CustomFormatElement] public bool LithFixEnabled { get; set; }
 
-		[CustomFormatElement] public int PositionX { get; set; }
-		[CustomFormatElement] public int PositionY { get; set; }
+		[CustomFormatElement] public uint PositionX { get; set; }
+		[CustomFormatElement] public uint PositionY { get; set; }
 		[CustomFormatElement] public string CVARS { get; set; }
 
 
@@ -40,6 +40,15 @@ namespace AVP_CustomLauncher.Config
 			PositionY = 0;
 			LithFixEnabled = false;
 			CVARS = "";
+		}
+
+		public CustomConfig(CustomConfig customConfigToCopy)
+		{
+			foreach (var property in customConfigToCopy.GetType().GetProperties())
+			{
+				var value = property.GetValue(customConfigToCopy);
+				this.GetType().GetProperty(property.Name).SetValue(this, value);
+			}
 		}
 
 		public static CustomConfig Load()

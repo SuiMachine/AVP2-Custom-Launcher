@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-			this.B_ManualEdit = new System.Windows.Forms.RichTextBox();
+			this.RB_ManualEdit = new System.Windows.Forms.RichTextBox();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.C_32color = new System.Windows.Forms.CheckBox();
 			this.C_Windowed = new System.Windows.Forms.CheckBox();
@@ -57,7 +57,7 @@
 			this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
 			this.label5 = new System.Windows.Forms.Label();
 			this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-			this.CB_LithFix_Borderless = new System.Windows.Forms.CheckBox();
+			this.C_LithFix_Borderless = new System.Windows.Forms.CheckBox();
 			this.C_LithFix_ENABLED = new System.Windows.Forms.CheckBox();
 			this.panel3 = new System.Windows.Forms.Panel();
 			this.num_LithFix_FPSCAP = new System.Windows.Forms.NumericUpDown();
@@ -74,15 +74,14 @@
 			((System.ComponentModel.ISupportInitialize)(this.num_LithFix_FPSCAP)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// B_ManualEdit
+			// RB_ManualEdit
 			// 
-			this.B_ManualEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.B_ManualEdit.Location = new System.Drawing.Point(3, 311);
-			this.B_ManualEdit.Name = "B_ManualEdit";
-			this.B_ManualEdit.Size = new System.Drawing.Size(388, 231);
-			this.B_ManualEdit.TabIndex = 0;
-			this.B_ManualEdit.Text = "";
-			this.B_ManualEdit.TextChanged += new System.EventHandler(this.B_ManualEdit_TextChanged);
+			this.RB_ManualEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.RB_ManualEdit.Location = new System.Drawing.Point(3, 311);
+			this.RB_ManualEdit.Name = "RB_ManualEdit";
+			this.RB_ManualEdit.Size = new System.Drawing.Size(388, 231);
+			this.RB_ManualEdit.TabIndex = 0;
+			this.RB_ManualEdit.Text = "";
 			// 
 			// panel1
 			// 
@@ -306,7 +305,7 @@
 			this.tableLayoutPanel1.ColumnCount = 1;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.B_ManualEdit, 0, 3);
+			this.tableLayoutPanel1.Controls.Add(this.RB_ManualEdit, 0, 3);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 1);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel4, 0, 4);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel5, 0, 2);
@@ -399,7 +398,7 @@
 			this.tableLayoutPanel6.ColumnCount = 2;
 			this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanel6.Controls.Add(this.CB_LithFix_Borderless, 1, 0);
+			this.tableLayoutPanel6.Controls.Add(this.C_LithFix_Borderless, 1, 0);
 			this.tableLayoutPanel6.Controls.Add(this.C_LithFix_ENABLED, 0, 0);
 			this.tableLayoutPanel6.Controls.Add(this.panel3, 0, 1);
 			this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -411,16 +410,17 @@
 			this.tableLayoutPanel6.Size = new System.Drawing.Size(382, 64);
 			this.tableLayoutPanel6.TabIndex = 3;
 			// 
-			// CB_LithFix_Borderless
+			// C_LithFix_Borderless
 			// 
-			this.CB_LithFix_Borderless.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.CB_LithFix_Borderless.AutoSize = true;
-			this.CB_LithFix_Borderless.Location = new System.Drawing.Point(194, 3);
-			this.CB_LithFix_Borderless.Name = "CB_LithFix_Borderless";
-			this.CB_LithFix_Borderless.Size = new System.Drawing.Size(149, 17);
-			this.CB_LithFix_Borderless.TabIndex = 1;
-			this.CB_LithFix_Borderless.Text = "Enable borderless window";
-			this.CB_LithFix_Borderless.UseVisualStyleBackColor = true;
+			this.C_LithFix_Borderless.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.C_LithFix_Borderless.AutoSize = true;
+			this.C_LithFix_Borderless.Location = new System.Drawing.Point(194, 3);
+			this.C_LithFix_Borderless.Name = "C_LithFix_Borderless";
+			this.C_LithFix_Borderless.Size = new System.Drawing.Size(149, 17);
+			this.C_LithFix_Borderless.TabIndex = 1;
+			this.C_LithFix_Borderless.Text = "Enable borderless window";
+			this.C_LithFix_Borderless.UseVisualStyleBackColor = true;
+			this.C_LithFix_Borderless.CheckedChanged += new System.EventHandler(this.CB_LithFix_Borderless_CheckedChanged);
 			// 
 			// C_LithFix_ENABLED
 			// 
@@ -493,7 +493,7 @@
 
         #endregion
 
-        private System.Windows.Forms.RichTextBox B_ManualEdit;
+        private System.Windows.Forms.RichTextBox RB_ManualEdit;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -522,10 +522,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
-        private System.Windows.Forms.CheckBox CB_LithFix_Borderless;
         private System.Windows.Forms.CheckBox C_LithFix_ENABLED;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.NumericUpDown num_LithFix_FPSCAP;
         private System.Windows.Forms.Label label6;
-    }
+		public System.Windows.Forms.CheckBox C_LithFix_Borderless;
+	}
 }

@@ -149,7 +149,7 @@
             this.projectPageLink.TabIndex = 1;
             this.projectPageLink.TabStop = true;
             this.projectPageLink.Text = "Project Page";
-            this.projectPageLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.projectPageLink_LinkClicked);
+            this.projectPageLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.ProjectPageLink_LinkClicked);
             // 
             // label1
             // 
@@ -170,7 +170,7 @@
             this.pcgwLink.TabIndex = 0;
             this.pcgwLink.TabStop = true;
             this.pcgwLink.Text = "PC Gaming Wiki";
-            this.pcgwLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.pcgwLink_LinkClicked);
+            this.pcgwLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.PcgwLink_LinkClicked);
             // 
             // donatePage
             // 
@@ -182,7 +182,7 @@
             this.donatePage.TabIndex = 2;
             this.donatePage.TabStop = true;
             this.donatePage.Text = "Donate to developer";
-            this.donatePage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.donatePage_LinkClicked);
+            this.donatePage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DonatePage_LinkClicked);
             // 
             // mainform
             // 
@@ -197,9 +197,9 @@
             this.Name = "mainform";
             this.ShowIcon = false;
             this.Text = "Aliens vs. Predator 2 - Custom Launcher";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainform_FormClosing);
-            this.Load += new System.EventHandler(this.mainform_Load);
-            this.LocationChanged += new System.EventHandler(this.mainform_LocationChanged);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Mainform_FormClosing);
+            this.Load += new System.EventHandler(this.Mainform_Load);
+            this.LocationChanged += new System.EventHandler(this.Mainform_LocationChanged);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

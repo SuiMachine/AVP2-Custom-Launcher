@@ -16,8 +16,10 @@ namespace AVP_CustomLauncher
 {
     public partial class mainform : Form
     {
-        GameSettings _GraphicsSettings;
-        ConfigChoice _ConfigChoice;
+        Config.CustomConfig customConfig;
+        Config.LithTechConfig lithTechConfig;
+
+
         GameHack _gamehack = new GameHack();
         int _posX = 0;
         int _posY = 0;
@@ -28,11 +30,8 @@ namespace AVP_CustomLauncher
 
         public mainform(string[] originalParams)
         {
-            var newConfig = Config.CustomConfig.Load();
-            newConfig.Save();
-
-
-
+            customConfig = Config.CustomConfig.Load();
+            lithTechConfig = Config.LithTechConfig.Load();
 
             if (originalParams.Contains("-skiplauncher", StringComparer.InvariantCultureIgnoreCase))
             {
@@ -44,7 +43,7 @@ namespace AVP_CustomLauncher
             InitializeComponent();
             if (File.Exists("autoexecextended.cfg"))
             {
-                setPositionFromConfig();
+                SetPositionFromConfig();
             }
         }
 
@@ -79,44 +78,28 @@ namespace AVP_CustomLauncher
             File.WriteAllText("avp2cmds.txt", output);
         }
 
-        private void setPositionFromConfig()
+        private void SetPositionFromConfig()
         {
-            uint positionX = 0;
-            uint positionY = 0;
-            string[] setings = File.ReadAllLines("autoexecextended.cfg");
-            foreach (string line in setings)
-            {
-                if (line.StartsWith("PositionX:"))
-                {
-                    positionX = parsePosition(line);
-                }
-                else if (line.StartsWith("PositionY:"))
-                {
-                    positionY = parsePosition(line);
-                }
-            }
-
-            if(checkIfPosIsCorrect(positionX, positionY))
+            if(checkIfPosIsCorrect(customConfig.PositionX, customConfig.PositionY))
             {
                 this.StartPosition = FormStartPosition.Manual;
-                this.SetDesktopLocation((int)positionX, (int)positionY);
+                this.SetDesktopLocation((int)customConfig.PositionX, (int)customConfig.PositionY);
             }
             else
             {
                 this.StartPosition = FormStartPosition.CenterScreen;
             }
-
         }
         #endregion
 
         #region EventHandlers
-        private void mainform_Load(object sender, EventArgs e)
+        private void Mainform_Load(object sender, EventArgs e)
         {
             CheckForRequiredGameFiles();
 
             if (!File.Exists("autoexec.cfg"))
             {
-                _ConfigChoice = new ConfigChoice();
+                ConfigChoice _ConfigChoice = new ConfigChoice();
                 _ConfigChoice.ShowDialog();
             }
 
@@ -126,68 +109,70 @@ namespace AVP_CustomLauncher
                 CreateGenericAVP2Cmds();
             }
 
-            _GraphicsSettings = new GameSettings(this);
 
             if(skipLauncher)
             {
                 this.WindowState = FormWindowState.Minimized;
-                startGame();
+                StartGame();
             }
         }
 
         private void B_StartGame_Click(object sender, EventArgs e)
         {
-            startGame();
+            StartGame();
         }
 
-        private void startGame()
+
+        //        GameSettings _GraphicsSettings;
+
+        private void StartGame()
         {
             string cmdlineparamters = File.ReadLines("avp2cmds.txt").FirstOrDefault();
             cmdlineparamters = stripResolutionParameters(cmdlineparamters);
 
-            if(_GraphicsSettings.customConfig.Windowed)
-                cmdlineparamters = cmdlineparamters + " +windowed 1";
+            if(customConfig.Windowed)
+                cmdlineparamters += " +windowed 1";
             else
-                cmdlineparamters = cmdlineparamters + " +windowed 0";
+				cmdlineparamters += " +windowed 0";
 
-            if(_GraphicsSettings.customConfig.DisableSound)
-                cmdlineparamters = cmdlineparamters + " +DisableSound 1";
+            if(customConfig.DisableSound)
+				cmdlineparamters += " +DisableSound 1";
             else
-                cmdlineparamters = cmdlineparamters + " +DisableSound 0";
+                cmdlineparamters += " +DisableSound 0";
 
-            if(_GraphicsSettings.customConfig.DisableMusic)
-                cmdlineparamters = cmdlineparamters + " +DisableMusic 1";
+            if(customConfig.DisableMusic)
+                cmdlineparamters += " +DisableMusic 1";
             else
-                cmdlineparamters = cmdlineparamters + " +DisableMusic 0";
+                cmdlineparamters += " +DisableMusic 0";
 
-            if(_GraphicsSettings.customConfig.DisableLogos)
-                cmdlineparamters = cmdlineparamters + " +DisableMovies 1";
+            if(customConfig.DisableLogos)
+                cmdlineparamters += " +DisableMovies 1";
             else
-                cmdlineparamters = cmdlineparamters + " +DisableMovies 0";
+                cmdlineparamters += " +DisableMovies 0";
 
-            if(_GraphicsSettings.customConfig.DisableJoystick)
-                cmdlineparamters = cmdlineparamters + " +DisableJoystick 1";
+            if(customConfig.DisableJoystick)
+                cmdlineparamters += " +DisableJoystick 1";
             else
-                cmdlineparamters = cmdlineparamters + " +DisableJoystick 0";
+                cmdlineparamters += " +DisableJoystick 0";
 
-            if(_GraphicsSettings.customConfig.DisableTrippleBuffering)
-                cmdlineparamters = cmdlineparamters + " +EnableTripBuf 0";
+            if(customConfig.DisableTrippleBuffering)
+                cmdlineparamters += " +EnableTripBuf 0";
             else
-                cmdlineparamters = cmdlineparamters + " +EnableTripBuf 1";
+                cmdlineparamters += " +EnableTripBuf 1";
 
-            if(_GraphicsSettings.customConfig.DisableHardwareCursor)
-                cmdlineparamters = cmdlineparamters + " +DisableHardwareCursor 1";
+            if(customConfig.DisableHardwareCursor)
+                cmdlineparamters += " +DisableHardwareCursor 1";
             else
-                cmdlineparamters = cmdlineparamters + " +DisableHardwareCursor 0";
+                cmdlineparamters += " +DisableHardwareCursor 0";
 
-            cmdlineparamters = cmdlineparamters + " " + originalParams + " " + _GraphicsSettings.T_CommandLine.Text;
+			cmdlineparamters += $" {originalParams} {customConfig.CVARS}";
 
             LogHandler.WriteLine("Launch parameters are: " + cmdlineparamters);
 
             Thread GameHackThread = new Thread(_gamehack.DoWork);
-            if (_GraphicsSettings.customConfig.AspectRatioFix)
+            if (customConfig.AspectRatioFix)
             {
-                _gamehack.SendValues(_GraphicsSettings.customConfig.FOV, _GraphicsSettings.ResolutionX, _GraphicsSettings.ResolutionY);
+                _gamehack.SendValues(customConfig.FOV, (int)lithTechConfig.GameScreenWidth, (int)lithTechConfig.GameScreenHeight);
                 GameHackThread.Start();
             }
 
@@ -219,31 +204,26 @@ namespace AVP_CustomLauncher
             {
                 if (words[i].ToLower() == "++gamescreenwidth" || words[i].ToLower() == "++screenwidth")
                 {
-                    uint num;
-                    if (uint.TryParse(words[i + 1], out num))
+					if (uint.TryParse(words[i + 1], out _))
                     {
-                        words[i + 1] = _GraphicsSettings.ResolutionX.ToString();
+                        words[i + 1] = lithTechConfig.GameScreenWidth.ToString();
                         i++;
                     }
                 }
                 else if (words[i].ToLower() == "++gamescreenheight" || words[i].ToLower() == "++screenheight")
                 {
-                    uint num;
-                    if (uint.TryParse(words[i + 1], out num))
+					if (uint.TryParse(words[i + 1], out _))
                     {
-                        words[i + 1] = _GraphicsSettings.ResolutionY.ToString();
+                        words[i + 1] = lithTechConfig.GameScreenHeight.ToString();
                         i++;
                     }
                 }
                 else if (words[i].ToLower() == "++gamebitdepth" || words[i].ToLower() == "++bitdepth")
                 {
-                    uint num;
-                    if (uint.TryParse(words[i + 1], out num))
+					if (uint.TryParse(words[i + 1], out _))
                     {
-                        if (_GraphicsSettings.GameBitDepth)
-                            words[i + 1] = "32";
-                        else
-                            words[i + 1] = "16";
+                        words[i + 1] = lithTechConfig.GameBitDepth.ToString();
+
                         i++;
                     }
                 }
@@ -253,9 +233,16 @@ namespace AVP_CustomLauncher
 
         private void B_DisplaySettings_Click(object sender, EventArgs e)
         {
-            _GraphicsSettings.StartPosition = FormStartPosition.Manual;
-            _GraphicsSettings.SetDesktopLocation(this.DesktopLocation.X + 20, this.DesktopLocation.Y + 20);
-            _GraphicsSettings.ShowDialog();
+            using (GameSettings _GraphicsSettings = new GameSettings(new Config.CustomConfig(customConfig), new Config.LithTechConfig(lithTechConfig)))
+			{
+                _GraphicsSettings.StartPosition = FormStartPosition.Manual;
+                _GraphicsSettings.SetDesktopLocation(this.DesktopLocation.X + 20, this.DesktopLocation.Y + 20);
+                if (_GraphicsSettings.ShowDialog() == DialogResult.OK)
+                {
+                    lithTechConfig = _GraphicsSettings.lithTechConfig;
+                    customConfig = _GraphicsSettings.customConfig;
+                }
+            }
         }
 
         private void B_Exit_Click(object sender, EventArgs e)
@@ -264,57 +251,13 @@ namespace AVP_CustomLauncher
             this.Close();
         }
 
-        private void mainform_FormClosing(object sender, FormClosingEventArgs e)
+        private void Mainform_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (File.Exists("autoexecextended.cfg")) //well should have thought about this earlier... whatever
-            {
-                bool flagX = false;
-                bool flagY = false;
-                string[] settings = File.ReadAllLines("autoexecextended.cfg");
-                for (int i = 0; i < settings.Length; i++)
-                {
-                    if (settings[i].StartsWith("PositionX:"))
-                    {
-                        settings[i] = "PositionX:" + _posX.ToString();
-                        flagX = true;
-                    }
-                    else if (settings[i].StartsWith("PositionY:"))
-                    {
-                        settings[i] = "PositionY:" + _posY.ToString();
-                        flagY = true;
-                    }
-                }
-
-                string output = string.Join("\n", settings);
-
-                if (!flagX)
-                    output += "\nPositionX:" + this._posX.ToString();
-                if (!flagY)
-                    output += "\nPositionY:" + this._posY.ToString();
-
-                File.WriteAllText("autoexecextended.cfg", output);
-            }
+            customConfig.Save();
             LogHandler.Close();
         }
         #endregion
 
-        #region ParseFunctions
-        private uint parsePosition(string line)
-        {
-            uint outVal = 0;
-            string valText = line.Split(':')[1];
-            if (valText != String.Empty)
-            {
-                if (uint.TryParse(valText, out outVal))
-                {
-                    return outVal;
-                }
-                else
-                    return 0;
-            }
-            else
-                return 0;
-        }
 
         private bool checkIfPosIsCorrect(uint PosX, uint PosY)
         {
@@ -328,11 +271,8 @@ namespace AVP_CustomLauncher
             }
             return false;
         }
-        #endregion
 
-
-
-        private void mainform_LocationChanged(object sender, EventArgs e)
+        private void Mainform_LocationChanged(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Normal && this.DesktopLocation.X > 0 && this.DesktopLocation.Y>0 && this.DesktopLocation.X < 14000)
             {
@@ -341,17 +281,17 @@ namespace AVP_CustomLauncher
             }
         }
 
-        private void projectPageLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void ProjectPageLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://github.com/SuiMachine/AVP2-Custom-Launcher");
         }
 
-        private void pcgwLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void PcgwLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("http://pcgamingwiki.com/wiki/Aliens_versus_Predator_2");
         }
 
-        private void donatePage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void DonatePage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://streamlabs.com/suicidemachine");
         }
