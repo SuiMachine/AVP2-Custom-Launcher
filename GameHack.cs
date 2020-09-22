@@ -93,8 +93,6 @@ namespace AVP_CustomLauncher
 						ReadFovY = Trainer.ReadPointerFloat(myProcess, cshellBaseAdress + fovAddress, offsetFovY);
 						readBgValue = Trainer.ReadPointerFloat(myProcess, cshellBaseAdress + bgScalingAddress, bgScalingOffsetsY);
 
-
-
 						if (ReadFovX != fovX && ReadFovX != 0x0000000)
 							Trainer.WritePointerFloat(myProcess, cshellBaseAdress + fovAddress, offsetFovX, fovX);
 						if (ReadFovY != fovY && ReadFovY != 0x0000000)
@@ -104,7 +102,6 @@ namespace AVP_CustomLauncher
 							Trainer.WritePointerFloat(myProcess, cshellBaseAdress + bgScalingAddress, bgScalingOffsetsX, 1.570796f);
 							Trainer.WritePointerFloat(myProcess, cshellBaseAdress + bgScalingAddress, bgScalingOffsetsY, bgCorrectedValue);
 						}
-
 
 						if (!dllInjected && LithTechBaseAdress != 0x0 && cshellBaseAdress != 0x0 && d3dren != 0x0)
 						{
@@ -152,7 +149,6 @@ namespace AVP_CustomLauncher
 								MessageBox.Show("Error when injecting DLL: " + result.ToString());
 							}
 
-
 							System.Threading.Thread.Sleep(500);
 
 							ProcessModuleCollection modules = myProcess[0].Modules;
@@ -179,7 +175,6 @@ namespace AVP_CustomLauncher
 				{
 					LogHandler.WriteLine("Exception in GameHack.cs" + ex.ToString());
 				}
-
 			}
 		}
 
