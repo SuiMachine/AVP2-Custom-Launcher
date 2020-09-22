@@ -16,3 +16,7 @@ Release/*.vshost.exe
 Release/*.vshost.exe.manifest
 Release/app.publish/*
 .vs/*
+
+*.zip
+*.rar
+*.7z

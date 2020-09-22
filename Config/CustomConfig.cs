@@ -1,6 +1,6 @@
-﻿using AVP_CustomLauncher.Serializers;
-using System;
+﻿using System;
 using System.IO;
+using System.Reflection;
 
 namespace AVP_CustomLauncher.Config
 {
@@ -53,15 +53,37 @@ namespace AVP_CustomLauncher.Config
 
 		public static CustomConfig Load()
 		{
-
 			CustomConfig obj;
 			if (File.Exists(FILEPATH))
 			{
-				CustomFormatSerializer serializer = new CustomFormatSerializer(typeof(CustomConfig));
-				FileStream fs = new FileStream(FILEPATH, FileMode.Open);
+				obj = new CustomConfig();
+				StreamReader streamReader = new StreamReader(FILEPATH);
 
-				obj = serializer.Deserialize<CustomConfig>(fs);
-				fs.Close();
+				while (!streamReader.EndOfStream)
+				{
+
+					var line = streamReader.ReadLine();
+					if (line.Contains(":"))
+					{
+						var split = line.Split(new char[] { ':' }, 2);
+						var key = split[0];
+						var value = split[1];
+
+						var propInfo = obj.GetType().GetProperty(key);
+						if (propInfo != null )
+						{
+							if(propInfo.PropertyType == typeof(uint))
+								propInfo.SetValue(obj, uint.Parse(value));
+							else if (propInfo.PropertyType == typeof(float))
+								propInfo.SetValue(obj, float.Parse(value));
+							else if (propInfo.PropertyType == typeof(bool))
+								propInfo.SetValue(obj, bool.Parse(value));
+							else if (propInfo.PropertyType == typeof(string))
+								propInfo.SetValue(obj, value);
+						}
+					}
+				}
+				streamReader.Close();
 				return obj;
 			}
 			else
@@ -70,12 +92,21 @@ namespace AVP_CustomLauncher.Config
 
 		public void Save()
 		{
-			CustomFormatSerializer serializer = new CustomFormatSerializer(typeof(CustomFormatElement));
 			if (!Directory.Exists(Directory.GetDirectoryRoot(FILEPATH)))
 				Directory.CreateDirectory(FILEPATH);
 			StreamWriter fw = new StreamWriter(FILEPATH);
-			serializer.Serialize(fw, this);
+			foreach (var prop in this.GetType().GetProperties())
+			{
+				if(prop.GetCustomAttribute<CustomFormatElement>() != null)
+				{
+					fw.WriteLine(string.Format("{0}:{1}", prop.Name, prop.GetValue(this)));
+				}
+			}
 			fw.Close();
+		}
+
+		internal class CustomFormatElement : Attribute
+		{
 		}
 	}
 }
