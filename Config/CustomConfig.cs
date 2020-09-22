@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace AVP_CustomLauncher.Config
@@ -103,6 +104,11 @@ namespace AVP_CustomLauncher.Config
 				}
 			}
 			fw.Close();
+		}
+
+		internal bool CheckLithFix()
+		{
+			return  Directory.GetDirectories(Directory.GetCurrentDirectory()).Any(x => x.ToLower().EndsWith("lithfix")) || Directory.GetFiles(Directory.GetCurrentDirectory()).Any(x => x.ToLower().EndsWith("lithfix.rez"));
 		}
 
 		internal class CustomFormatElement : Attribute

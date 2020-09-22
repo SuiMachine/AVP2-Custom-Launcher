@@ -50,6 +50,7 @@ namespace AVP_CustomLauncher
 			notificationToBig = false;
 			notificationWindowed = false;
 
+			this.C_LithFix_ENABLED.Enabled = customConfig.CheckLithFix();
 			ToggleHackSpecificEnable();
 			ToggleLithFixSpecificEnable();
 		}

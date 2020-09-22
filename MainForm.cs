@@ -97,6 +97,8 @@ namespace AVP_CustomLauncher
 
             customConfig = Config.CustomConfig.Load();
             lithTechConfig = Config.LithTechConfig.Load();
+            if (customConfig.LithFixEnabled)
+                customConfig.LithFixEnabled = customConfig.CheckLithFix();
 
             if (!File.Exists("avp2cmds.txt"))
             {
