@@ -196,36 +196,42 @@ namespace AVP_CustomLauncher
 
         private string stripResolutionParameters(string cmdlineparamters)
         {
-            string[] words = cmdlineparamters.Split(' ');
-            for (int i = 0; i < words.Length - 1; i++)
+            if (cmdlineparamters.Contains(" "))
             {
-                if (words[i].ToLower() == "++gamescreenwidth" || words[i].ToLower() == "++screenwidth")
+                string[] words = cmdlineparamters.Split(' ');
+                for (int i = 0; i < words.Length - 1; i++)
                 {
-					if (uint.TryParse(words[i + 1], out _))
+                    if (words[i].ToLower() == "++gamescreenwidth" || words[i].ToLower() == "++screenwidth")
                     {
-                        words[i + 1] = lithTechConfig.GameScreenWidth.ToString();
-                        i++;
+                        if (uint.TryParse(words[i + 1], out _))
+                        {
+                            words[i + 1] = lithTechConfig.GameScreenWidth.ToString();
+                            i++;
+                        }
                     }
-                }
-                else if (words[i].ToLower() == "++gamescreenheight" || words[i].ToLower() == "++screenheight")
-                {
-					if (uint.TryParse(words[i + 1], out _))
+                    else if (words[i].ToLower() == "++gamescreenheight" || words[i].ToLower() == "++screenheight")
                     {
-                        words[i + 1] = lithTechConfig.GameScreenHeight.ToString();
-                        i++;
+                        if (uint.TryParse(words[i + 1], out _))
+                        {
+                            words[i + 1] = lithTechConfig.GameScreenHeight.ToString();
+                            i++;
+                        }
                     }
-                }
-                else if (words[i].ToLower() == "++gamebitdepth" || words[i].ToLower() == "++bitdepth")
-                {
-					if (uint.TryParse(words[i + 1], out _))
+                    else if (words[i].ToLower() == "++gamebitdepth" || words[i].ToLower() == "++bitdepth")
                     {
-                        words[i + 1] = lithTechConfig.GameBitDepth.ToString();
+                        if (uint.TryParse(words[i + 1], out _))
+                        {
+                            words[i + 1] = lithTechConfig.GameBitDepth.ToString();
 
-                        i++;
+                            i++;
+                        }
                     }
                 }
+                return string.Join(" ", words);
             }
-            return string.Join(" ", words);
+            else
+                return cmdlineparamters;
+
         }
 
         private void B_DisplaySettings_Click(object sender, EventArgs e)
