@@ -296,11 +296,6 @@ namespace AVP_CustomLauncher
             Process.Start("http://pcgamingwiki.com/wiki/Aliens_versus_Predator_2");
         }
 
-        private void DonatePage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("https://streamlabs.com/suicidemachine");
-        }
-
         private void WSGFLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("http://www.wsgf.org/dr/aliens-versus-predator-2-gold-edition");
