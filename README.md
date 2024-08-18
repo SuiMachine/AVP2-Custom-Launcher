@@ -28,6 +28,6 @@ Patch the game if you haven't already. Download the program from [releases page]
 
 Credits
 -------
-* [SuicideMachine](http://www.twitch.tv/suicidemachine/)
+* [SuicideMachine](http://www.twitch.tv/suimachine/)
 * evolution536 - who wrote the DLL injector class
 * Cless - who wrote the trainer class
